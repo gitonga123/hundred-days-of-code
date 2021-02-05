@@ -1,7 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(ExpandedWidget());
+void main() => runApp(WrapWidget());
+
+class WrapWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Flutter Widget of the Week: Wrap"),
+        ),
+        body: SafeArea(
+            child: Container(
+              color: Colors.amber[100],
+              child: Wrap(
+                alignment: WrapAlignment.start,
+                direction: Axis.horizontal,
+                spacing: 8.0,
+                runSpacing: 5.0,
+                children: <Widget>[
+                  Container(
+                    color: Colors.amber,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.black,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.blue,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.brown,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.cyan,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.deepOrange,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.deepPurple,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.green,
+                    width: 80,
+                    height: 80,
+                  ),
+                  Container(
+                    color: Colors.teal,
+                    width: 80,
+                    height: 80,
+                  )
+                ],
+              ),
+            )
+        ),
+      ),
+    );
+  }
+}
 
 class ExpandedWidget extends StatelessWidget {
   @override
