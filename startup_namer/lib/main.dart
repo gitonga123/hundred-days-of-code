@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(SafeAreaWidget());
+
+
+class SafeAreaWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Widget of the Week: SafeArea'),
+        ),
+        body: SafeArea(child: Center(
+          child: Text(
+            'Example of SafeArea Widget in Flutter',
+            style: TextStyle(
+              fontSize: 26,
+              color: Colors.black
+            ),
+            textAlign: TextAlign.center,
+          ),
+        )),
+      ),
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
