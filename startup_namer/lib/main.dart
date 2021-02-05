@@ -1,7 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(WrapWidget());
+void main() => runApp(AnimatedContainerWidget());
+
+class AnimatedContainerWidget extends StatefulWidget {
+  @override
+  _AnimatedContainerWidgetState createState() =>
+      _AnimatedContainerWidgetState();
+}
+
+class _AnimatedContainerWidgetState extends State<AnimatedContainerWidget> {
+  final _myDuration = Duration(seconds: 1);
+  var _myValue = Color(0xFF00bb00);
+  final _myNewValue = Color(0xFF0000FF);
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Center(
+          child: AnimatedContainer(
+            color: _myValue,
+            duration: _myDuration,
+            child: SomeOtherWidget(),
+          ),
+        ),
+        updateStateButton()
+      ],
+    );
+  }
+
+  Align updateStateButton() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 100),
+        child: RaisedButton(
+          onPressed: () {
+            setState(() {
+              _myValue = _myNewValue;
+            });
+          },
+          child: Text('Update State'),
+        ),
+      ),
+    );
+  }
+}
+
+class SomeOtherWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      height: 200,
+    );
+  }
+}
 
 class WrapWidget extends StatelessWidget {
   @override
@@ -13,62 +67,61 @@ class WrapWidget extends StatelessWidget {
         ),
         body: SafeArea(
             child: Container(
-              color: Colors.amber[100],
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                direction: Axis.horizontal,
-                spacing: 8.0,
-                runSpacing: 5.0,
-                children: <Widget>[
-                  Container(
-                    color: Colors.amber,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.black,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.blue,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.brown,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.cyan,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.deepOrange,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.deepPurple,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.green,
-                    width: 80,
-                    height: 80,
-                  ),
-                  Container(
-                    color: Colors.teal,
-                    width: 80,
-                    height: 80,
-                  )
-                ],
+          color: Colors.amber[100],
+          child: Wrap(
+            alignment: WrapAlignment.start,
+            direction: Axis.horizontal,
+            spacing: 8.0,
+            runSpacing: 5.0,
+            children: <Widget>[
+              Container(
+                color: Colors.amber,
+                width: 80,
+                height: 80,
               ),
-            )
-        ),
+              Container(
+                color: Colors.black,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.blue,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.brown,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.cyan,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.deepOrange,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.deepPurple,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.green,
+                width: 80,
+                height: 80,
+              ),
+              Container(
+                color: Colors.teal,
+                width: 80,
+                height: 80,
+              )
+            ],
+          ),
+        )),
       ),
     );
   }
