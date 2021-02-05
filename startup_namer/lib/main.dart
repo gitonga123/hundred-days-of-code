@@ -32,7 +32,7 @@ class _RandomWordsState extends State<RandomWords> {
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
         ],
       ),
-      body: _buildSuggestions(),
+      body: SafeArea(child: _buildSuggestions()),
     );
   }
 
