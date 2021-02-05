@@ -1,298 +1,115 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
-void main() => runApp(AnimatedContainerWidget());
+void main() => runApp(MyApp());
 
-class AnimatedContainerWidget extends StatefulWidget {
+class MyApp extends StatefulWidget {
   @override
-  _AnimatedContainerWidgetState createState() =>
-      _AnimatedContainerWidgetState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _AnimatedContainerWidgetState extends State<AnimatedContainerWidget> {
-  final _myDuration = Duration(seconds: 1);
-  var _myValue = Color(0xFF00bb00);
-  final _myNewValue = Color(0xFF0000FF);
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Center(
-          child: AnimatedContainer(
-            color: _myValue,
-            duration: _myDuration,
-            child: SomeOtherWidget(),
-          ),
-        ),
-        updateStateButton()
-      ],
-    );
-  }
-
-  Align updateStateButton() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 100),
-        child: RaisedButton(
-          onPressed: () {
-            setState(() {
-              _myValue = _myNewValue;
-            });
-          },
-          child: Text('Update State'),
-        ),
-      ),
-    );
-  }
-}
-
-class SomeOtherWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 200,
-    );
-  }
-}
-
-class WrapWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Flutter Widget of the Week: Wrap"),
-        ),
-        body: SafeArea(
-            child: Container(
-          color: Colors.amber[100],
-          child: Wrap(
-            alignment: WrapAlignment.start,
-            direction: Axis.horizontal,
-            spacing: 8.0,
-            runSpacing: 5.0,
-            children: <Widget>[
-              Container(
-                color: Colors.amber,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.black,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.blue,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.brown,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.cyan,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.deepOrange,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.deepPurple,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.green,
-                width: 80,
-                height: 80,
-              ),
-              Container(
-                color: Colors.teal,
-                width: 80,
-                height: 80,
-              )
-            ],
-          ),
-        )),
-      ),
-    );
-  }
-}
-
-class ExpandedWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Widget of the week: Expanded'),
-        ),
-        body: SafeArea(
+class _MyAppState extends State<MyApp> {
+  Widget titleSection = Container(
+    padding: const EdgeInsets.all(32),
+    child: Row(
+      children: [
+        Expanded(
+          /*1*/
           child: Column(
-            children: <Widget>[
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /*2*/
               Container(
-                color: Colors.green,
-                width: 150,
-                height: 140,
-                child: Center(
-                  child: Text(
-                    'Container Widget 1',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27,
-                        fontWeight: FontWeight.bold),
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  'Lake Naivasha Campground',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              Container(
-                color: Colors.blue,
-                width: 150,
-                height: 140,
-                child: Center(
-                  child: Text(
-                    'Container Widget 2',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27,
-                        fontWeight: FontWeight.bold),
-                  ),
+              Text(
+                'Naivasha, Kenya',
+                style: TextStyle(
+                  color: Colors.grey[500],
                 ),
               ),
-              Expanded(
-                  child: Container(
-                color: Colors.pink,
-                child: Center(
-                  child: Text(
-                    'Container Widget 3',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ))
             ],
           ),
         ),
-      ),
-    );
-  }
-}
+        /*3*/
+        Icon(
+          Icons.star,
+          color: Colors.red[500],
+        ),
+        Text('41'),
+      ],
+    ),
+  );
+  Widget textSection = Container(
+    padding: const EdgeInsets.all(32),
+    child: Text(
+      'Lake Naivasha is a freshwater lake in Kenya '
+      'outside the town of Naivasha in Nakuru County, which lies north west of Nairobi. '
+      'It is part of the Great Rift Valley.'
+      'The name derives from the local Maasai name Naiposha, '
+      'meaning "rough water" because of the sudden storms which can arise.',
+      softWrap: true,
+    ),
+  );
 
-class SafeAreaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Color color = Theme.of(context).primaryColor;
     return MaterialApp(
+      title: 'Flutter Layout Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Widget of the Week: SafeArea'),
+          title: Text('Flutter layout demo'),
         ),
-        body: SafeArea(
-            child: Center(
+        body: ListView(
+          children: <Widget>[
+            Image.asset(
+              'images/lake.jpg',
+              width: 600,
+              height: 240,
+              fit: BoxFit.cover,
+            ),
+            titleSection,
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _buildButtonColumn(color, Icons.call, 'CALL'),
+                  _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
+                  _buildButtonColumn(color, Icons.share, 'SHARE'),
+                ],
+              ),
+            ),
+            textSection
+          ],
+        ),
+      ),
+    );
+  }
+
+  Column _buildButtonColumn(Color color, IconData icon, String label) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          icon,
+          color: color,
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 8),
           child: Text(
-            'Example of SafeArea Widget in Flutter',
-            style: TextStyle(fontSize: 26, color: Colors.black),
-            textAlign: TextAlign.center,
+            label,
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w400, color: color),
           ),
-        )),
-      ),
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Startup Name Generator',
-      theme: ThemeData(primaryColor: Colors.white),
-      home: RandomWords(),
-    );
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  @override
-  _RandomWordsState createState() => _RandomWordsState();
-}
-
-class _RandomWordsState extends State<RandomWords> {
-  final List<WordPair> _suggestions = <WordPair>[];
-  final TextStyle _biggerFont = const TextStyle(fontSize: 18);
-  final _saved = Set<WordPair>();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
-        ],
-      ),
-      body: SafeArea(child: _buildSuggestions()),
-    );
-  }
-
-  void _pushSaved() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      final tiles = _saved.map((WordPair pair) {
-        return ListTile(title: Text(pair.asPascalCase, style: _biggerFont));
-      });
-      final divided =
-          ListTile.divideTiles(tiles: tiles, context: context).toList();
-      return Scaffold(
-          appBar: AppBar(title: Text('Saved Suggestions')),
-          body: ListView(children: divided));
-    }));
-  }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (BuildContext _context, int i) {
-          if (i.isOdd) {
-            return Divider();
-          }
-          final int index = i ~/ 2;
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final alreadySaved = _saved.contains(pair);
-    return ListTile(
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-      ),
+        )
+      ],
     );
   }
 }
