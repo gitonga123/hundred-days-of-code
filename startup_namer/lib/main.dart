@@ -1,8 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(SafeAreaWidget());
+void main() => runApp(ExpandedWidget());
 
+class ExpandedWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Flutter Widget of the week: Expanded'),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: Colors.green,
+                width: 150,
+                height: 140,
+                child: Center(
+                  child: Text(
+                    'Container Widget 1',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.blue,
+                width: 150,
+                height: 140,
+                child: Center(
+                  child: Text(
+                    'Container Widget 2',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Expanded(
+                  child: Container(
+                color: Colors.pink,
+                child: Center(
+                  child: Text(
+                    'Container Widget 3',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class SafeAreaWidget extends StatelessWidget {
   @override
@@ -12,13 +74,11 @@ class SafeAreaWidget extends StatelessWidget {
         appBar: AppBar(
           title: Text('Widget of the Week: SafeArea'),
         ),
-        body: SafeArea(child: Center(
+        body: SafeArea(
+            child: Center(
           child: Text(
             'Example of SafeArea Widget in Flutter',
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.black
-            ),
+            style: TextStyle(fontSize: 26, color: Colors.black),
             textAlign: TextAlign.center,
           ),
         )),
