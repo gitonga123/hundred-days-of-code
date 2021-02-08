@@ -22,11 +22,14 @@ class CreateSofascoresTable extends Migration
                 $table->string('player_2');
                 $table->string('home_odd');
                 $table->string('away_odd');
+                $table->string('home_change');
+                $table->string('away_change');
                 $table->string('expected_value_home');
                 $table->string('actual_value_home');
                 $table->string('expected_value_away');
                 $table->string('actual_value_away');
                 $table->string('result');
+                $table->string('score');
                 $table->timestamps();
             }
         );

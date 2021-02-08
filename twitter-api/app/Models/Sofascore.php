@@ -18,6 +18,8 @@ class Sofascore extends Model
         'actual_value_home',
         'expected_value_away',
         'actual_value_away',
-        'result'
+        'result',
+        'home_change',
+        'away_change'
     ];
 }

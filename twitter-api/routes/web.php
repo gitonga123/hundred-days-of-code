@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,5 @@ Route::get(
         return view('tweets');
     }
 );
+
+Route::get('/score_home', 'SofascoreController@index');
