@@ -16,33 +16,45 @@ class SofascoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($date = '2021-01-18')
+    public function index($date = '2021-01-03')
     {
-        $base_file = $date . '_base.json';
-        $predict_file = $date . '_predict.json';
+        try {
+            $base_file = $date . '_base.json';
+            $predict_file = $date . '_predict.json';
 
-        $predicted_file = empty($this->checkIfFileExists($predict_file, false)) ? $this->writePredictedToFIle($predict_file, $date) : $this->checkIfFileExists($predict_file, false);
+            $predicted_file = empty($this->checkIfFileExists($predict_file, false)) ? $this->writePredictedToFIle($predict_file, $date) : $this->checkIfFileExists($predict_file, false);
 
-        $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $date) : $this->checkIfFileExists($base_file);
-        $result = $this->processMatchResults($match_file, $date, $predicted_file);
-        return null;
+            $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $date) : $this->checkIfFileExists($base_file);
+            $this->processMatchResults($match_file, $date, $predicted_file);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false]);
+        }
 
     }
 
     public function updateRecordsCorrectScore()
     {
-        $result = Sofascore::whereNull('correct_score')->take(500)->get();
+        $result = Sofascore::where('updated_score', 0)->take(1500)->get();
         foreach ($result as $record) {
             if ($record->home_score) {
                 $winner = $this->determineWinner(
                     $record->home_score, $record->away_score
                 );
-                Sofascore::where('id', $record->id)
-                    ->update(['correct_score' => $winner]);
-                Log::info('Updating record -> ' . $record->match_id);
+                if ($winner === 1) {
+                    Sofascore::where('id', $record->id)
+                        ->update(['updated_score' => 1]);
+                    Log::error('Score not found for record -> ' . $record->match_id);
+                } else if ($winner) {
+                    Sofascore::where('id', $record->id)
+                        ->update(['correct_score' => $winner, 'updated_score' => 1]);
+                    Log::info('Updating score record -> ' . $record->match_id);
+                }
             }
 
         }
+        dd(count($result));
         return;
     }
 
@@ -73,9 +85,6 @@ class SofascoreController extends Controller
                         $this->createProcessMatchResults($full_match_details);
                         Log::info('Processing id --> ' . $value['id']);
                     }
-                    // $full_match_details['score'] = $this->determineWinner(
-                    //     $value['homeScore'], $value['awayScore']
-                    // );
                 }
             }
         }
@@ -97,11 +106,15 @@ class SofascoreController extends Controller
         $home = 0;
         $away = 0;
         $count = 1;
-        if (array_key_exists('normaltime', $homeScore)) {
+
+        if (empty($homeScore) || empty($awayScore)) {
+            return 1;
+        }
+        if (array_key_exists('normaltime', $homeScore) || array_key_exists('normaltime', $awayScore)) {
             return $homeScore['normaltime'] . "-" . $awayScore['normaltime'];
         }
 
-        while ($home <= 3 || $away <= 3) {
+        while (($home < 3 || $away < 3) && $count < 10) {
             $key = "period" . $count;
             if (array_key_exists($key, $homeScore)) {
                 if ($homeScore[$key] > $awayScore[$key]) {
@@ -114,8 +127,12 @@ class SofascoreController extends Controller
 
             $count += 1;
         }
+        if ($home > 0 || $away > 0) {
+            return $home . "-" . $away;
+        }
 
-        return $home . "-" . $away;
+        return 1;
+
     }
 
     public function convertTimestampToDateTimeWithTimeZone($timestamp, $input_date)
