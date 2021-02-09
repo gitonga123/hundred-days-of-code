@@ -20,16 +20,18 @@ class CreateSofascoresTable extends Migration
                 $table->string('competition');
                 $table->string('player_1');
                 $table->string('player_2');
-                $table->string('home_odd');
-                $table->string('away_odd');
-                $table->string('home_change');
-                $table->string('away_change');
-                $table->string('expected_value_home');
-                $table->string('actual_value_home');
-                $table->string('expected_value_away');
-                $table->string('actual_value_away');
+                $table->string('home_odd')->nullable();
+                $table->string('away_odd')->nullable();
+                $table->string('home_change')->nullable();
+                $table->string('away_change')->nullable();
+                $table->string('expected_value_home')->nullable();
+                $table->string('actual_value_home')->nullable();
+                $table->string('expected_value_away')->nullable();
+                $table->string('actual_value_away')->nullable();
                 $table->string('result');
-                $table->string('score');
+                $table->text('home_score');
+                $table->text('away_score');
+                $table->string('match_id');
                 $table->timestamps();
             }
         );

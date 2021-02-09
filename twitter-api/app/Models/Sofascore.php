@@ -20,6 +20,11 @@ class Sofascore extends Model
         'actual_value_away',
         'result',
         'home_change',
-        'away_change'
+        'away_change',
+        'home_score',
+        'away_score',
+        'match_id',
+        'event_date',
+        'correct_score'
     ];
 }

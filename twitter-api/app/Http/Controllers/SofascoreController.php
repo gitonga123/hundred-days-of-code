@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sofascore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use JsonMachine\JsonMachine;
-use JsonMachine\JsonDecoder\ExtJsonDecoder;
-
 
 class SofascoreController extends Controller
 {
@@ -17,37 +16,106 @@ class SofascoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($date = '2021-02-05')
+    public function index($date = '2021-01-18')
     {
         $base_file = $date . '_base.json';
         $predict_file = $date . '_predict.json';
 
-        $predicted_file = empty($this->checkIfFileExists($predict_file)) ? $this->writePredictedToFIle($predict_file, $date) : $this->checkIfFileExists($predict_file);
+        $predicted_file = empty($this->checkIfFileExists($predict_file, false)) ? $this->writePredictedToFIle($predict_file, $date) : $this->checkIfFileExists($predict_file, false);
 
         $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $date) : $this->checkIfFileExists($base_file);
         $result = $this->processMatchResults($match_file, $date, $predicted_file);
+        return null;
 
+    }
+
+    public function updateRecordsCorrectScore()
+    {
+        $result = Sofascore::whereNull('correct_score')->take(500)->get();
+        foreach ($result as $record) {
+            if ($record->home_score) {
+                $winner = $this->determineWinner(
+                    $record->home_score, $record->away_score
+                );
+                Sofascore::where('id', $record->id)
+                    ->update(['correct_score' => $winner]);
+                Log::info('Updating record -> ' . $record->match_id);
+            }
+
+        }
+        return;
     }
 
     public function processMatchResults($match_file, $date, $predicted_file)
     {
+        $full_match_details = [];
         $match_details = JsonMachine::fromFile($match_file, '/events');
+        $index = 0;
         foreach ($match_details as $key => $value) {
-            $event_date_time = $this->convertTimestampToDateTimeWithTimeZone(
-                $value['startTimestamp'], $date
-            );
-            if ($event_date_time) {
-                $full_match_details = $this->processPredictedMatchDetails(
-                    $predicted_file, $value['id']
+            if ($value['tournament']['slug'] != 'ukraine-win-cup') {
+                $event_date_time = $this->convertTimestampToDateTimeWithTimeZone(
+                    $value['startTimestamp'], $date
                 );
-                $full_match_details['competition'] = $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'];
-                $full_match_details['player_1'] = $value['homeTeam']['name'];
-                $full_match_details['player_2'] = $value['awayTeam']['name'];
-                $full_match_details['result'] = $value['winnerCode'];
-                $full_match_details['score'] = $value['homeScore']['normaltime'] ."-" . $value['awayScore']['normaltime'];
+                if ($event_date_time) {
+                    $full_match_details = $this->processPredictedMatchDetails(
+                        $predicted_file, $value['id']
+                    );
+                    if ($full_match_details) {
+                        $full_match_details['competition'] = $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'];
+                        $full_match_details['player_1'] = $value['homeTeam']['name'];
+                        $full_match_details['player_2'] = $value['awayTeam']['name'];
+                        $full_match_details['result'] = $value['winnerCode'];
+                        $full_match_details['home_score'] = json_encode($value['homeScore']);
+                        $full_match_details['away_score'] = json_encode($value['awayScore']);
+                        $full_match_details['match_id'] = $value['id'];
+                        $full_match_details['event_date'] = $event_date_time;
+
+                        $this->createProcessMatchResults($full_match_details);
+                        Log::info('Processing id --> ' . $value['id']);
+                    }
+                    // $full_match_details['score'] = $this->determineWinner(
+                    //     $value['homeScore'], $value['awayScore']
+                    // );
+                }
             }
         }
+    }
 
+    public function createProcessMatchResults($full_match_details)
+    {
+        try {
+            Sofascore::create($full_match_details);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
+    public function determineWinner($home_score, $away_score)
+    {
+        $homeScore = json_decode($home_score, true);
+        $awayScore = json_decode($away_score, true);
+        $home = 0;
+        $away = 0;
+        $count = 1;
+        if (array_key_exists('normaltime', $homeScore)) {
+            return $homeScore['normaltime'] . "-" . $awayScore['normaltime'];
+        }
+
+        while ($home <= 3 || $away <= 3) {
+            $key = "period" . $count;
+            if (array_key_exists($key, $homeScore)) {
+                if ($homeScore[$key] > $awayScore[$key]) {
+                    $home += 1;
+                }
+                if ($awayScore[$key] > $homeScore[$key]) {
+                    $away += 1;
+                }
+            }
+
+            $count += 1;
+        }
+
+        return $home . "-" . $away;
     }
 
     public function convertTimestampToDateTimeWithTimeZone($timestamp, $input_date)
@@ -66,16 +134,14 @@ class SofascoreController extends Controller
         $predicted_details = JsonMachine::fromFile($predicted_file, '/odds');
         $reformated_predicted_details = [];
         foreach ($predicted_details as $key => $value) {
-            if ($key == $match_id) {
-                dd($key, $match_id);
+            if (intval($key) == $match_id) {
                 $predictor = $this->getProviderPredictions($key);
                 if ($predictor) {
                     $calculation = $this->convertFractionToDecimal(
                         $value['choices'][0]['fractionalValue'],
                         $value['choices'][1]['fractionalValue']
                     );
-                    $reformated_predicted_details[$key] = [
-                        'id' => $key,
+                    $reformated_predicted_details = [
                         'home_change' => $value['choices'][0]['change'],
                         'away_change' => $value['choices'][1]['change'],
                         'home_odd' => $calculation[0],
@@ -85,8 +151,7 @@ class SofascoreController extends Controller
                         'expected_value_away' => $predictor['away']['expected'],
                         'actual_value_away' => $predictor['away']['actual'],
                     ];
-                } 
-                Log::info($reformated_predicted_details);  
+                }
             }
         }
         return $reformated_predicted_details;
@@ -102,37 +167,43 @@ class SofascoreController extends Controller
     public function getProviderPredictions($predicted_id)
     {
         $predicted_array = [];
-        $response = Http::get(
-            "https://api.sofascore.com/api/v1/event/{$predicted_id}/provider/1/winning-odds"
-        );
-        if ($response->status() == 404) {
-            return false;
-        }
-        $details = json_decode($response->body(), true);
-        if ($details['home']) {
-            $predicted_array['home'] = [
-                'expected' => $details['home']['expected'],
-                'actual' => $details['home']['actual'],
-            ];
-        } else {
-            $predicted_array['home'] = [
-                'expected' => null,
-                'actual' => null,
-            ];
-        }
-        if ($details['away']) {
-            $predicted_array['away'] = [
-                'expected' => $details['away']['expected'],
-                'actual' => $details['away']['actual'],
-            ];
-        } else {
-            $predicted_array['away'] = [
-                'expected' => null,
-                'actual' => null,
-            ];
+        try {
+            $response = Http::get(
+                "https://api.sofascore.com/api/v1/event/{$predicted_id}/provider/1/winning-odds"
+            );
+            if ($response->status() == 404) {
+                return false;
+            }
+            $details = json_decode($response->body(), true);
+            if ($details['home']) {
+                $predicted_array['home'] = [
+                    'expected' => $details['home']['expected'],
+                    'actual' => $details['home']['actual'],
+                ];
+            } else {
+                $predicted_array['home'] = [
+                    'expected' => null,
+                    'actual' => null,
+                ];
+            }
+            if ($details['away']) {
+                $predicted_array['away'] = [
+                    'expected' => $details['away']['expected'],
+                    'actual' => $details['away']['actual'],
+                ];
+            } else {
+                $predicted_array['away'] = [
+                    'expected' => null,
+                    'actual' => null,
+                ];
+            }
+
+            return $predicted_array;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return $predicted_array;
         }
 
-        return $predicted_array;
     }
 
     /**
@@ -171,7 +242,7 @@ class SofascoreController extends Controller
      *
      * @return mixed
      */
-    public function checkIfFileExists($file_name)
+    public function checkIfFileExists($file_name, $full_path = true)
     {
         try {
             $match_info = Storage::disk('local')->exists($file_name) ? Storage::disk('local')->path($file_name) : [];

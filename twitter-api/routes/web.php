@@ -26,4 +26,8 @@ Route::get(
     }
 );
 
-Route::get('/score_home', 'SofascoreController@index');
+Route::get('/update_score_home', 'SofascoreController@updateRecordsCorrectScore');
+
+Route::get('/score_home/{date}', 'SofascoreController@index')->where(
+    ['date' => "/\d{4}\-\d{2}-\d{2}/"]
+);
