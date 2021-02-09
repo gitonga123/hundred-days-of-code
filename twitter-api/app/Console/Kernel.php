@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\UpdateScores::class,
+        Commands\ProcessMatch::class
     ];
 
     /**
@@ -24,7 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command(\App\Console\Commands\UpdateScores::class)->everyThirtyMinutes()->withoutOverlapping(10)->runInBackground();
+        $schedule->command(\App\Console\Commands\ProcessMatch::class)->everyThirtyMinutes()->withoutOverlapping(10)->runInBackground();
     }
 
     /**

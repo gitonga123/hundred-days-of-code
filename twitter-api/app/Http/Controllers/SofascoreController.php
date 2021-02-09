@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use JsonMachine\JsonMachine;
+use App\Models\SfDates;
 
 class SofascoreController extends Controller
 {
@@ -16,9 +17,20 @@ class SofascoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($date = '2021-01-03')
+    public function index($new_date = '2021-01-01')
     {
         try {
+
+            $sf_dates = SfDates::where('processed', 0)->first();
+            if (!$sf_dates) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => 'No more dates to process. Thank You'
+                    ]
+                );
+            }
+            $date = $sf_dates->event_date;
             $base_file = $date . '_base.json';
             $predict_file = $date . '_predict.json';
 
@@ -26,6 +38,8 @@ class SofascoreController extends Controller
 
             $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $date) : $this->checkIfFileExists($base_file);
             $this->processMatchResults($match_file, $date, $predicted_file);
+            SfDates::where('id', $sf_dates->id)
+                        ->update(['processed' => 1]);
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -36,7 +50,7 @@ class SofascoreController extends Controller
 
     public function updateRecordsCorrectScore()
     {
-        $result = Sofascore::where('updated_score', 0)->take(1500)->get();
+        $result = Sofascore::where('updated_score', 0)->take(600)->get();
         foreach ($result as $record) {
             if ($record->home_score) {
                 $winner = $this->determineWinner(
@@ -45,17 +59,16 @@ class SofascoreController extends Controller
                 if ($winner === 1) {
                     Sofascore::where('id', $record->id)
                         ->update(['updated_score' => 1]);
-                    Log::error('Score not found for record -> ' . $record->match_id);
+                    Log::error('Correct Score not found for record -> ' . $record->match_id);
                 } else if ($winner) {
                     Sofascore::where('id', $record->id)
                         ->update(['correct_score' => $winner, 'updated_score' => 1]);
-                    Log::info('Updating score record -> ' . $record->match_id);
+                    Log::info('Updating correct score of record -> ' . $record->match_id);
                 }
             }
 
         }
-        dd(count($result));
-        return;
+        return response()->json(['success' => true, 'message' => 'Number of records -> ' . count($result)]);
     }
 
     public function processMatchResults($match_file, $date, $predicted_file)
@@ -343,9 +356,14 @@ class SofascoreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function searchRecords(Request $request)
     {
-        //
+        $search_params = $request->only(['home_odd', 'away_odd', 'competition']);
+        $new_search_params = array_filter($search_params);
+        $competition = Sofascore::all('competition')->unique('competition');
+        $records = Sofascore::where($new_search_params)->get();
+
+        return view('welcome', compact('competition', 'records'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
+use App\Models\Sofascore;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get(
     '/', function () {
-        return view('welcome');
+        $competition = Sofascore::all('competition')->unique('competition');
+        $records = Sofascore::orderBy('id', 'desc')->take(20)->get();
+        return view('welcome', compact('competition', 'records'));
     }
 );
+
+Route::post('/search_match_records/score_home', 'SofascoreController@searchRecords');
 
 Route::get(
     '/tweets', function () {
@@ -28,5 +33,5 @@ Route::get(
 
 Route::get('/update_score_home', 'SofascoreController@updateRecordsCorrectScore');
 
-Route::get('/score_home/date/{date?}', 'SofascoreController@index');
+Route::get('/score_home/date/{new_date?}', 'SofascoreController@index');
 
