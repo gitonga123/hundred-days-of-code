@@ -65,7 +65,7 @@
   </div> --}}
     <div class="navbar navbar-dark bg-dark shadow-sm">
       <div class="container">
-        <a href="#" class="navbar-brand d-flex align-items-center">
+        <a href="/" class="navbar-brand d-flex align-items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
             stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2"
             viewBox="0 0 24 24">
@@ -130,8 +130,8 @@
                       <th scope="col">Away</th>
                       <th scope="col">Home %</th>
                       <th scope="col">Away %</th>
-                      <th scope="col">Score</th>
                       <th scope="col">Result</th>
+                      <th scope="col">Score</th>
                       <th scope="col">Competition</th>
                       <th scope="col">Event Date</th>
                     </tr>
@@ -154,19 +154,19 @@
 
                       </td>
                       <td>{{$match->away_odd}}
-                        @if ($match->home_change == "-1")
+                        @if ($match->away_change == "-1")
                         <i class="fa fa-sort-down text-danger"></i>
                         @endif
-                        @if ($match->home_change == "1")
+                        @if ($match->away_change == "1")
                         <i class="fa fa-sort-up text-primary"></i>
                         @endif
-                        @if ($match->home_change == "0")
+                        @if ($match->away_change == "0")
                         @endif
                       </td>
                       <td>{{$match->expected_value_home}} - {{$match->actual_value_home}}</td>
                       <td>{{$match->expected_value_away}} - {{$match->actual_value_away}}</td>
                       <td>{{$match->result}}</td>
-                      <td>{{$match->correct_result}}</td>
+                      <td>{{$match->correct_score}}</td>
                       <td>{{$match->competition}}</td>
                       <td>{{$match->event_date}}</td>
                     </tr>

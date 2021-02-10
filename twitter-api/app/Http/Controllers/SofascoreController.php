@@ -37,9 +37,9 @@ class SofascoreController extends Controller
             $predicted_file = empty($this->checkIfFileExists($predict_file, false)) ? $this->writePredictedToFIle($predict_file, $date) : $this->checkIfFileExists($predict_file, false);
 
             $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $date) : $this->checkIfFileExists($base_file);
-            $this->processMatchResults($match_file, $date, $predicted_file);
+            $number_of_records = $this->processMatchResults($match_file, $date, $predicted_file);
             SfDates::where('id', $sf_dates->id)
-                        ->update(['processed' => 1]);
+                        ->update(['processed' => 1, 'number_of_records' => $number_of_records]);
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -48,9 +48,16 @@ class SofascoreController extends Controller
 
     }
 
+
+    /**
+     * Update Records for correct score if it exists
+     * Given the sets for both players, determine who wins the match
+     *
+     * @return mixed
+     */
     public function updateRecordsCorrectScore()
     {
-        $result = Sofascore::where('updated_score', 0)->take(600)->get();
+        $result = Sofascore::where('updated_score', 0)->take(1500)->get();
         foreach ($result as $record) {
             if ($record->home_score) {
                 $winner = $this->determineWinner(
@@ -71,6 +78,16 @@ class SofascoreController extends Controller
         return response()->json(['success' => true, 'message' => 'Number of records -> ' . count($result)]);
     }
 
+    
+    /**
+     * Process match results. Combine events and the predicted outcome
+     *
+     * @param string $match_file //path to the file location
+     * @param string $date // date which the event took place
+     * @param string $predicted_file //path to the file location
+     * 
+     * @return void
+     */
     public function processMatchResults($match_file, $date, $predicted_file)
     {
         $full_match_details = [];
@@ -97,12 +114,23 @@ class SofascoreController extends Controller
 
                         $this->createProcessMatchResults($full_match_details);
                         Log::info('Processing id --> ' . $value['id']);
+                        $index++;
                     }
                 }
             }
         }
+
+        return $index;
     }
 
+
+    /**
+     * Create the processed match details in the \App\Models\Sofascore
+     *
+     * @param array $full_match_details // array of match details to create
+     * 
+     * @return void
+     */
     public function createProcessMatchResults($full_match_details)
     {
         try {
@@ -112,6 +140,16 @@ class SofascoreController extends Controller
         }
     }
 
+
+    
+    /**
+     * Determine the Winner given the set of scores
+     *
+     * @param string $home_score //set details for home scores
+     * @param string $away_score // set details for away score
+     * 
+     * @return mixed
+     */
     public function determineWinner($home_score, $away_score)
     {
         $homeScore = json_decode($home_score, true);
@@ -148,6 +186,15 @@ class SofascoreController extends Controller
 
     }
 
+    /**
+     * Convert Timestamp to Date with timezone and compare if is equal to
+     * input date
+     *
+     * @param string $timestamp //the time stamp to convert
+     * @param string $input_date //input date
+     * 
+     * @return mixed
+     */
     public function convertTimestampToDateTimeWithTimeZone($timestamp, $input_date)
     {
         $date = new \DateTime("@" . $timestamp);
@@ -159,6 +206,14 @@ class SofascoreController extends Controller
         return false;
     }
 
+    /**
+     * Process Predicted match details and return an array
+     *
+     * @param string $predicted_file // path to the file
+     * @param int $match_id // id of the current match
+     * 
+     * @return array
+     */
     public function processPredictedMatchDetails($predicted_file, $match_id)
     {
         $predicted_details = JsonMachine::fromFile($predicted_file, '/odds');
@@ -239,8 +294,8 @@ class SofascoreController extends Controller
     /**
      * Convert Fraction string to Decimal
      *
-     * @param [string] $home_value
-     * @param [string] $away_value
+     * @param string $home_value //home value
+     * @param string $away_value //away value
      *
      * @return array
      */

@@ -10,6 +10,7 @@ class SfDates extends Model
     use HasFactory;
     protected $fillable = [
         'event_date',
-        'processed'
+        'processed',
+        'number_of_records'
     ];
 }
