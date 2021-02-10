@@ -4889,9 +4889,23 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-
+function updateClock() {
+  var currentTime = new Date();
+  var currentHours = currentTime.getHours();
+  var currentMin = currentTime.getMinutes();
+  var currentSeconds = currentTime.getSeconds();
+  currentMin = (currentMin < 10 ? "0" : "") + currentMin;
+  currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+  var timeOfDay = currentHours < 12 ? " AM" : " PM";
+  currentHours = currentHours > 12 ? currentHours - 12 : currentHours;
+  currentHours = currentHours === 0 ? 12 : currentHours;
+  var currentTimeString = currentHours + ":" + currentMin + ":" + currentSeconds + "" + timeOfDay;
+  $('#timeClock').html(currentTimeString);
+}
 
 /***/ }),
 

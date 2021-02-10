@@ -16,11 +16,7 @@ use App\Models\Sofascore;
  */
 
 Route::get(
-    '/', function () {
-        $competition = Sofascore::all('competition')->unique('competition');
-        $records = Sofascore::orderBy('id', 'desc')->take(20)->get();
-        return view('welcome', compact('competition', 'records'));
-    }
+    '/', 'SofascoreController@home'
 );
 
 Route::post('/search_match_records/score_home', 'SofascoreController@searchRecords');
@@ -30,6 +26,9 @@ Route::get(
         return view('tweets');
     }
 );
+
+Route::get('/today/matches', 'SofascoreController@matchesForToday');
+Route::get('/search/match/{id}/{competition}', 'SofascoreController@searchMatchWithId');
 
 Route::get('/update_score_home', 'SofascoreController@updateRecordsCorrectScore');
 

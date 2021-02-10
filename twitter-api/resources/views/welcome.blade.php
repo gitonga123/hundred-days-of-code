@@ -20,6 +20,7 @@
   <script src="{{ asset('js/d285027a3d.js') }}"></script>
 
 
+
   <meta name="theme-color" content="#7952b3">
 
 
@@ -73,9 +74,10 @@
             <circle cx="12" cy="13" r="4" /></svg>
           <strong>Home</strong>
         </a>
-        {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button> --}}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+          aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span id="timeClock"></span>
+        </button>
       </div>
     </div>
   </header>
@@ -86,18 +88,18 @@
       <div class="row py-lg-5">
         <div class="col-lg-12 col-md-12 mx-auto">
           <form class="row row-cols-lg-auto g-3 align-items-center" method="POST"
-            action="/search_match_records/score_home">
+            action="/search_match_records/score_home" autocompletete="off">
             @csrf
             <div class="col-12">
               <label class="visually-hidden" for="inlineFormInputGroupUsername">Home</label>
               <div class="input-group">
-                <input name="home_odd" type="text" class="form-control" placeholder="Home" aria-label="Home">
+                <input name="home_odd" type="text" class="form-control" autocomplete="off"  placeholder="Home" aria-label="Home" value="{{$request->home_odd}}" x-webkit-speech>
               </div>
             </div>
             <div class="col-12">
               <label class="visually-hidden" for="inlineFormInputGroupUsername">Away</label>
               <div class="input-group">
-                <input name="away_odd" type="text" class="form-control" placeholder="Away" aria-label="Away">
+                <input name="away_odd" type="text" class="form-control" autocomplete="off"  placeholder="Away" aria-label="Away" value="{{$request->away_odd}}">
               </div>
             </div>
 
@@ -106,10 +108,34 @@
               <select class="form-select" id="inlineFormSelectPref" name="competition">
                 <option selected>Choose...</option>
                 @foreach ($competition as $comp)
-                <option value="{{$comp->competition}}">{{$comp->competition}}</option>
+                <option value="{{$comp->competition}}"@if($request->competition == $comp->competition)selected @endif>{{$comp->competition}}</option>
                 @endforeach
               </select>
             </div>
+              <div class="col-6">
+                <label class="visually-hidden" for="inlineFormInputGroupUsername">Exected Home</label>
+                <div class="input-group">
+                  <input name="expected_value_home" type="text" class="form-control" autocomplete="off"  placeholder="Exected Home" aria-label="Away" value="{{$request->expected_value_home}}">
+                </div>
+              </div>
+              <div class="col-6">
+                <label class="visually-hidden" for="inlineFormInputGroupUsername">Actual Home</label>
+                <div class="input-group">
+                  <input name="actual_value_home" type="text" class="form-control" autocomplete="off"  placeholder="Actual Home" aria-label="Away" value="{{$request->actual_value_home}}">
+                </div>
+              </div>
+              <div class="col-6">
+                <label class="visually-hidden" for="inlineFormInputGroupUsername">Expected Away</label>
+                <div class="input-group">
+                  <input name="expected_value_away" type="text" class="form-control" autocomplete="off"  placeholder="Expected Away" aria-label="Away" value="{{$request->expected_value_away}}">
+                </div>
+              </div>
+              <div class="col-6">
+                <label class="visually-hidden" for="inlineFormInputGroupUsername">Actual Away</label>
+                <div class="input-group">
+                  <input name="actual_value_away" type="text" class="form-control" autocomplete="off"  placeholder="Actual Away" aria-label="Away" value="{{$request->actual_value_away}}">
+                </div>
+              </div>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
           </form>
         </div>
@@ -147,7 +173,7 @@
                         <i class="fa fa-sort-down text-danger"></i>
                         @endif
                         @if ($match->home_change == "1")
-                        <i class="fa fa-sort-up text-primary"></i>
+                        <i class="fa fa-sort-up text-success"></i>
                         @endif
                         @if ($match->home_change == "0")
                         @endif
@@ -158,7 +184,7 @@
                         <i class="fa fa-sort-down text-danger"></i>
                         @endif
                         @if ($match->away_change == "1")
-                        <i class="fa fa-sort-up text-primary"></i>
+                        <i class="fa fa-sort-up text-success"></i>
                         @endif
                         @if ($match->away_change == "0")
                         @endif
@@ -197,6 +223,34 @@
       </div>
     </div>
 
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row row-cols-12 row-cols-sm-12 row-cols-md-12">
+          <div class="col">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="d-flex align-items-start">
+                  <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    {{-- <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+                    <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+                    <a class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                    <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> --}}
+                    <span id="today_matches"></span>
+                  </div>
+                  <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <footer class="text-muted py-5">
@@ -211,13 +265,34 @@
   </footer>
 
   @livewireScripts
+  <script src="{{ asset('js/app.js') }}"></script>
   <script src="{{ asset('js/bootstrap.bundle.min.js') }}"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
   </script>
   <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
   <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
   <script>
+    function updateClock() {
+        var currentTime = new Date( );
+        var currentHours = currentTime.getHours( );
+        var currentMin = currentTime.getMinutes( );
+        var currentSeconds = currentTime.getSeconds( );
+
+        currentMin = (currentMin < 10 ? "0" : "") + currentMin;
+        currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+
+        var timeOfDay = (currentHours < 12) ? " AM" : " PM";
+
+        currentHours = (currentHours > 12) ? currentHours - 12 : currentHours;
+
+        currentHours = (currentHours === 0) ? 12 : currentHours;
+
+        var currentTimeString = currentHours + ":" + currentMin + ":" + currentSeconds + "" + timeOfDay;
+
+        $('#timeClock').html("<span style='color: #fff'><strong>" + currentTimeString+"</strong></span>");
+    }
     $(document).ready( function () {
+          setInterval('updateClock()', 1000);
           $('#match_results_table_id tfoot th').each( function () {
               var title = $(this).text();
               if (title) {
@@ -241,7 +316,7 @@
                     } );
                 }
             });
-        } );
+      } );
 
   </script>
 </body>

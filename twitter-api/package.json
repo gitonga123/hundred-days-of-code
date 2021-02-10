@@ -20,5 +20,7 @@
         "sass": "^1.32.6",
         "sass-loader": "^8.0.2"
     },
-    "dependencies": {}
+    "dependencies": {
+        "jquery": "^3.5.1"
+    }
 }
