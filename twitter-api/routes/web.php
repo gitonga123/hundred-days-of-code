@@ -20,6 +20,7 @@ Route::get(
 );
 
 Route::post('/search_match_records/score_home', 'SofascoreController@searchRecords');
+Route::post('/update_time_to_pick_event', 'SettingsController@store');
 
 Route::get(
     '/tweets', function () {
@@ -27,7 +28,7 @@ Route::get(
     }
 );
 
-Route::get('/today/matches', 'SofascoreController@matchesForToday');
+Route::get('/today/matches', 'SofascoreController@matchesForToday')->name('today_matches');
 Route::get('/search/match/{id}/{competition}', 'SofascoreController@searchMatchWithId');
 
 Route::get('/update_score_home', 'SofascoreController@updateRecordsCorrectScore');

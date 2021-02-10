@@ -65,7 +65,23 @@
   </header>
 
   <main>
-
+    <section class="py-2 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-12 col-md-12 mx-auto">
+                <form class="row row-cols-lg-auto g-3 align-items-center" method="POST"
+                action="/update_time_to_pick_event" autocompletete="off" id="store_settings_time">
+                @csrf
+                <div class="col-12">
+                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Time</label>
+                    <div class="input-group">
+                      <input name="current_time" type="text" class="form-control" autocomplete="off"  placeholder="time" aria-label="time" value="{{$current_time->current_time}}" required>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
     <section class="py-2 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-12 col-md-12 mx-auto">
@@ -74,15 +90,19 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Match Id</th>
+                    <th scope="col">Home Player</th>
+                    <th scope="col">Away Player</th>
                     <th scope="col">Competition</th>
                     <th scope="col">View</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach ($store_map_id as $match)
-                  <tr>
+                  <tr id="{{$match['id']}}">
                     <th scope="row">#</th>
                     <td>{{$match['id']}}</td>
+                    <td>{{$match['home_player']}}</td>
+                    <td>{{$match['away_player']}}</td>
                     <td>{{$match['competition']}}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="getMatchDetails({{$match['id']}}, '{{$match['competition']}}')">View Details</button></td>
                   </tr>
@@ -99,6 +119,7 @@
                     <div class="col">
                         <div class="card shadow-sm">
                             <div class="card-body">
+                                <p class="card-header"><span id="table_result_count"></span></p>
                                 <span id="table_search_result"></span>
                             </div>
                         </div>
@@ -149,6 +170,7 @@
         $('#timeClock').html("<span style='color: #fff'><strong>" + currentTimeString+"</strong></span>");
     }
     function getMatchDetails(match_id, compe) {
+        $('#table_result_count').html(`<h5>Loading...</h5>`);
         var serverRqst = $.ajax({
             url: `/search/match/${match_id}/${compe}`,
             data: {},
@@ -204,6 +226,7 @@
           });
           table += tr;
           table += `</tbody></table>`;
+          $('#table_result_count').html(`<h3>${myObj.length}</h3>`);
           $('#table_search_result').html(table);
         });
     }

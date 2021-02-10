@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use App\Models\SfDates;
 use App\Models\Sofascore;
 use Illuminate\Http\Request;
@@ -326,6 +327,7 @@ class SofascoreController extends Controller
         $away_odd = bcdiv(
             $numbers_away[0] / $numbers_away[1], 1, 2
         );
+        
         if ($home_odd < 1 || $away_odd < 1) {
             return [$home_odd + 1, $away_odd + 1];
         }
@@ -464,7 +466,8 @@ class SofascoreController extends Controller
         $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $today) : $this->checkIfFileExists($base_file);
         $store_map_id = [];
         $match_details = JsonMachine::fromFile($match_file, '/events');
-        $date_time = "18:00";
+        $current_time = Setting::whereNotNull('current_time')->orderBy('id', 'desc')->first();
+        $date_time = $current_time->current_time;
         $result = true;
         foreach ($match_details as $key => $value) {
             if ($value['tournament']['slug'] != 'ukraine-win-cup') {
@@ -476,13 +479,15 @@ class SofascoreController extends Controller
                 if ($event_date_time == $date_time) {
                     $store_map_id[] = [
                         'id' => $value['id'],
-                        'competition' =>  $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name']
+                        'competition' => $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'],
+                        'home_player' => $value['homeTeam']['name'],
+                        'away_player' => $value['awayTeam']['name']
                     ];
                 }
             }
         }
-
-        return view('today_matches', compact('store_map_id', 'result'));
+        
+        return view('today_matches', compact('store_map_id', 'result', 'current_time'));
     }
 
     /**
@@ -498,22 +503,21 @@ class SofascoreController extends Controller
         $predicted_array = $this->getMatchDetail($id);
         $calc_odds = false;
         $result = [];
-
-        if ($predicted_array['home_odd'] && $predicted_array['away_odd']) {            
+        if ($predicted_array['home_odd'] && $predicted_array['away_odd']) {
             $calc_odds = $this->convertFractionToDecimal(
                 $predicted_array['home_odd'], $predicted_array['away_odd']
             );
 
             $result = $this->searchForMatchWithThisDetails($predicted_array, $calc_odds, $competition);
-        }        
+        }
         return json_encode($result);
     }
 
     public function searchForMatchWithThisDetails($predicted_array, $calc_odds, $competition)
     {
         $search = [
-            'home_odd' => $calc_odds[0],
-            'away_odd' => $calc_odds[1],
+            'home_odd' => rtrim($calc_odds[0]),
+            'away_odd' => rtrim($calc_odds[1]),
             'competition' => $competition,
             'actual_value_home' => $predicted_array['home']['actual'],
             'expected_value_home' => $predicted_array['home']['expected'],
