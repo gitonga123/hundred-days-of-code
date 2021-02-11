@@ -86,7 +86,7 @@ class SofascoreController extends Controller
      */
     public function updateTotalScores()
     {
-        $result = Sofascore::where('updated_score', 1)->take(5000)->get();
+        $result = Sofascore::where('updated_score', 1)->take(1000)->get();
         foreach ($result as $record) {
             if ($record->home_score) {
                 $winner = $this->determineTotalScore(
@@ -247,7 +247,7 @@ class SofascoreController extends Controller
             'home_total' => $home,
             'away_total' => $away,
             'both_total' => $away + $home,
-            'updated_score' => 2
+            'updated_score' => 2,
         ];
     }
 
@@ -498,7 +498,8 @@ class SofascoreController extends Controller
         $request->expected_value_home = '';
         $request->expected_value_away = '';
         $request->actual_value_away = '';
-        return view('welcome', compact('competition', 'records', 'request'));
+        $total_records = Sofascore::count();
+        return view('welcome', compact('competition', 'records', 'request', 'total_records'));
     }
 
     /**
@@ -518,8 +519,9 @@ class SofascoreController extends Controller
         $new_search_params = array_filter($search_params);
         $competition = Sofascore::all('competition')->unique('competition');
         $records = Sofascore::where($new_search_params)->get();
+        $total_records = Sofascore::count();
 
-        return view('welcome', compact('competition', 'records', 'request'));
+        return view('welcome', compact('competition', 'records', 'request', 'total_records'));
     }
 
     /**
@@ -652,20 +654,21 @@ class SofascoreController extends Controller
     /**
      * Update the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function updateSfDates($id)
+    public function updateSfDates()
     {
         $year = 2020;
-        $month = "09";
-        $day = 30;
+        $month = "10";
+        $day = 17;
         while ($day > 0) {
-            $date = $year . '-'.$month.'-'.$day;
-            dd($date);
-            SfDates::create([
-                'event_date' => $date
-            ]);
+            $date = $year . '-' . $month . '-' . $day;
+            SfDates::create(
+                [
+                    'event_date' => $date,
+                ]
+            );
+            $day -= 1;
         }
     }
 }
