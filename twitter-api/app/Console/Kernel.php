@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UpdateScores::class,
-        Commands\ProcessMatch::class
+        Commands\ProcessMatch::class,
+        Commands\UpdateTotalScores::class
     ];
 
     /**

@@ -79,6 +79,35 @@ class SofascoreController extends Controller
     }
 
     /**
+     * Update the records for total scores for each and total
+     * Given the sets for both players
+     *
+     * @return mixed
+     */
+    public function updateTotalScores()
+    {
+        $result = Sofascore::where('updated_score', 1)->take(5000)->get();
+        foreach ($result as $record) {
+            if ($record->home_score) {
+                $winner = $this->determineTotalScore(
+                    $record->home_score, $record->away_score
+                );
+                if ($winner === 1) {
+                    Sofascore::where('id', $record->id)
+                        ->update(['updated_score' => 2]);
+                    Log::error('Correct Score not found for record -> ' . $record->match_id);
+                } else if ($winner) {
+                    Sofascore::where('id', $record->id)
+                        ->update($winner);
+                    Log::info('Updating correct score of record -> ' . $record->match_id);
+                }
+            }
+
+        }
+        return response()->json(['success' => true, 'message' => 'Number of records -> ' . count($result)]);
+    }
+
+    /**
      * Process match results. Combine events and the predicted outcome
      *
      * @param string $match_file //path to the file location
@@ -93,7 +122,7 @@ class SofascoreController extends Controller
         $match_details = JsonMachine::fromFile($match_file, '/events');
         $index = 0;
         foreach ($match_details as $key => $value) {
-            if ($value['tournament']['slug'] != 'ukraine-win-cup') {
+            if ($value['tournament']['slug'] != 'ukraine-win-cup' && $value['winnerCode'] != 0) {
                 $event_date_time = $this->convertTimestampToDateTimeWithTimeZone(
                     $value['startTimestamp'], $date
                 );
@@ -179,7 +208,47 @@ class SofascoreController extends Controller
         }
 
         return 1;
+    }
 
+    /**
+     * Determine the total scores given the set of scores
+     *
+     * @param string $home_score //set details for home scores
+     * @param string $away_score // set details for away score
+     *
+     * @return mixed
+     */
+    public function determineTotalScore($home_score, $away_score)
+    {
+        $homeScore = json_decode($home_score, true);
+        $awayScore = json_decode($away_score, true);
+        $home = 0;
+        $away = 0;
+        $count = 1;
+
+        if (empty($homeScore) || empty($awayScore)) {
+            return 1;
+        }
+        if (!is_array($homeScore) || !is_array($awayScore)) {
+            return 1;
+        }
+
+        while ($count < 10) {
+            $key = "period" . $count;
+            if (array_key_exists($key, $homeScore)) {
+                $home += intval($homeScore[$key]);
+                $away += intval($awayScore[$key]);
+            }
+
+            $count += 1;
+        }
+
+        return [
+            'home_total' => $home,
+            'away_total' => $away,
+            'both_total' => $away + $home,
+            'updated_score' => 2
+        ];
     }
 
     /**
@@ -327,7 +396,7 @@ class SofascoreController extends Controller
         $away_odd = bcdiv(
             $numbers_away[0] / $numbers_away[1], 1, 2
         );
-        
+
         if ($home_odd < 1 || $away_odd < 1) {
             return [$home_odd + 1, $away_odd + 1];
         }
@@ -481,12 +550,12 @@ class SofascoreController extends Controller
                         'id' => $value['id'],
                         'competition' => $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'],
                         'home_player' => $value['homeTeam']['name'],
-                        'away_player' => $value['awayTeam']['name']
+                        'away_player' => $value['awayTeam']['name'],
                     ];
                 }
             }
         }
-        
+
         return view('today_matches', compact('store_map_id', 'result', 'current_time'));
     }
 
@@ -581,13 +650,22 @@ class SofascoreController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function updateSfDates($id)
     {
-        //
+        $year = 2020;
+        $month = "09";
+        $day = 30;
+        while ($day > 0) {
+            $date = $year . '-'.$month.'-'.$day;
+            dd($date);
+            SfDates::create([
+                'event_date' => $date
+            ]);
+        }
     }
 }
