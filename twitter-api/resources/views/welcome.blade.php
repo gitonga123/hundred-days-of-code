@@ -78,6 +78,7 @@
           aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
           <span id="timeClock"></span>
         </button>
+        <a class="nav-link d-flex text-danger" href="/today/matches">Today Matches</a>
       </div>
     </div>
   </header>
