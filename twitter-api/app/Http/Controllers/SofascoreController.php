@@ -664,6 +664,9 @@ class SofascoreController extends Controller
         $day = 17;
         while ($day > 0) {
             $date = $year . '-' . $month . '-' . $day;
+            if ($day < 10) {
+                $date = $year . '-' . $month . '-' . '0' .$day;
+            }
             SfDates::create(
                 [
                     'event_date' => $date,
