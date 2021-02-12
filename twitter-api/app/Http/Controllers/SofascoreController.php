@@ -553,6 +553,7 @@ class SofascoreController extends Controller
                         'competition' => $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'],
                         'home_player' => $value['homeTeam']['name'],
                         'away_player' => $value['awayTeam']['name'],
+                        'result' => $value['winnerCode']
                     ];
                 }
             }

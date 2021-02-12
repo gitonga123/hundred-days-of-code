@@ -92,6 +92,7 @@
                     <th scope="col">Match Id</th>
                     <th scope="col">Home Player</th>
                     <th scope="col">Away Player</th>
+                    <th scope="col">Result</th>
                     <th scope="col">Competition</th>
                     <th scope="col">View</th>
                   </tr>
@@ -103,6 +104,7 @@
                     <td>{{$match['id']}}</td>
                     <td>{{$match['home_player']}}</td>
                     <td>{{$match['away_player']}}</td>
+                    <td>{{$match['result']}}</td>
                     <td>{{$match['competition']}}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="getMatchDetails({{$match['id']}}, '{{$match['competition']}}')">View Details</button></td>
                   </tr>
@@ -190,11 +192,11 @@
                                         <th scope="col">Away Team</th>
                                         <th scope="col">Home</th>
                                         <th scope="col">Away</th>
-                                        <th scope="col">Home %</th>
-                                        <th scope="col">Away %</th>
                                         <th scope="col">Result</th>
                                         <th scope="col">Score</th>
-                                        <th scope="col">Competition</th>
+                                        <th scope="col">Home Total</th>
+                                        <th scope="col">Away Total</th>
+                                        <th scope="col">Both Total</th>
                                         <th scope="col">Event Date</th>
                                       </tr>
                                     </thead>
@@ -216,11 +218,11 @@
                       <td>${match.player_2}</td>
                       <td>${match.home_odd}${icon}</td>
                       <td>${match.away_odd}${icon_2}</td>
-                      <td>${match.expected_value_home} - ${match.actual_value_home}</td>
-                      <td>${match.expected_value_away} - ${match.actual_value_away}</td>
                       <td>${match.result}</td>
                       <td>${match.correct_score}</td>
-                      <td>${match.competition}</td>
+                      <td>${match.home_total}</td>
+                      <td>${match.away_total}</td>
+                      <td>${match.both_total}</td>
                       <td>${match.event_date}</td></tr>
                     `;
           });
