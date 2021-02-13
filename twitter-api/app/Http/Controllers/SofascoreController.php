@@ -57,7 +57,14 @@ class SofascoreController extends Controller
      */
     public function updateRecordsCorrectScore()
     {
-        $result = Sofascore::where('updated_score', 0)->take(1500)->get();
+        $result = Sofascore::select(
+            'id',
+            'away_score',
+            'updated_score',
+            'correct_score',
+            'home_score',
+            'match_id'
+        )->where('updated_score', 0)->take(1000)->get();
         foreach ($result as $record) {
             if ($record->home_score) {
                 $winner = $this->determineWinner(
@@ -75,6 +82,9 @@ class SofascoreController extends Controller
             }
 
         }
+        if (count($result) == 0) {
+            Log::info('Zero records found for correct score');
+        }
         return response()->json(['success' => true, 'message' => 'Number of records -> ' . count($result)]);
     }
 
@@ -86,23 +96,31 @@ class SofascoreController extends Controller
      */
     public function updateTotalScores()
     {
-        $result = Sofascore::where('updated_score', 1)->take(1000)->get();
+        $result = Sofascore::select(
+            'id',
+            'away_score',
+            'updated_score',
+            'correct_score',
+            'home_score',
+            'match_id'
+        )->where(
+            'updated_score', 1
+        )->whereNotNull('correct_score')->take(1000)->get();
         foreach ($result as $record) {
-            if ($record->home_score) {
+            if (!empty($record->home_score) && !empty($record->away_score)) {
                 $winner = $this->determineTotalScore(
                     $record->home_score, $record->away_score
                 );
-                if ($winner === 1) {
-                    Sofascore::where('id', $record->id)
-                        ->update(['updated_score' => 2]);
-                    Log::error('Correct Score not found for record -> ' . $record->match_id);
-                } else if ($winner) {
-                    Sofascore::where('id', $record->id)
-                        ->update($winner);
-                    Log::info('Updating correct score of record -> ' . $record->match_id);
-                }
+                Sofascore::where(
+                    'id',
+                    $record->id
+                )->update($winner);
+                Log::info('Updating total score of record -> ' . $record->match_id);
             }
 
+        }
+        if (count($result) == 0) {
+            Log::info('Zero records found for total scores');
         }
         return response()->json(['success' => true, 'message' => 'Number of records -> ' . count($result)]);
     }
@@ -122,7 +140,8 @@ class SofascoreController extends Controller
         $match_details = JsonMachine::fromFile($match_file, '/events');
         $index = 0;
         foreach ($match_details as $key => $value) {
-            if ($value['tournament']['slug'] != 'ukraine-win-cup' && $value['winnerCode'] != 0) {
+            
+            if (array_key_exists('winnerCode', $value) && $value['tournament']['slug'] != 'ukraine-win-cup' && $value['winnerCode'] != 0) {
                 $event_date_time = $this->convertTimestampToDateTimeWithTimeZone(
                     $value['startTimestamp'], $date
                 );
@@ -147,7 +166,6 @@ class SofascoreController extends Controller
                 }
             }
         }
-
         return $index;
     }
 
@@ -225,15 +243,7 @@ class SofascoreController extends Controller
         $home = 0;
         $away = 0;
         $count = 1;
-
-        if (empty($homeScore) || empty($awayScore)) {
-            return 1;
-        }
-        if (!is_array($homeScore) || !is_array($awayScore)) {
-            return 1;
-        }
-
-        while ($count < 10) {
+        while ($count < 8) {
             $key = "period" . $count;
             if (array_key_exists($key, $homeScore)) {
                 $home += intval($homeScore[$key]);
@@ -660,8 +670,8 @@ class SofascoreController extends Controller
     public function updateSfDates()
     {
         $year = 2020;
-        $month = "10";
-        $day = 17;
+        $month = "08";
+        $day = 31;
         while ($day > 0) {
             $date = $year . '-' . $month . '-' . $day;
             if ($day < 10) {
