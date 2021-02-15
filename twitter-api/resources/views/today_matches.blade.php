@@ -172,10 +172,30 @@
         $('#timeClock').html("<span style='color: #fff'><strong>" + currentTimeString+"</strong></span>");
     }
     function getScoreDetails(match_id) {
+      $(`#match_${match_id}`).html();
       let newServerRqst = $.ajax({
             url: `/search/match-score-details/${match_id}`,
             data: {},
             type: 'get'
+        });
+        newServerRqst.done(function (response) {
+          var home_score = JSON.parse(response.data.home);
+          var away_score = JSON.parse(response.data.away);
+          var home_keys = Object.keys(home_score);
+          var away_keys = Object.keys(away_score);
+          let home_string = '<tr>';
+          let away_string = '<tr>';
+          home_keys.forEach(key => {
+            if (key.includes('period')) {
+              home_string+=`<td>${home_score[key]}</td>`;
+              away_string+=`<td>${away_score[key]}</td>`;
+            }
+          });
+          home_string += '</td>'; away_string +='</td>';
+          $(`#span_id_${match_id}`).removeClass('d-none');
+          $(`#span_id_${match_id}`).addClass('d-inline');
+          $(`#match_${match_id}`).append(home_string);
+          $(`#match_${match_id}`).append(away_string);
         });
     }
     function getMatchDetails(match_id, compe) {
@@ -221,8 +241,8 @@
                   icon_2 = `<i class="fa fa-sort-up text-success"></i>`;
               }
 
-              tr += `<tr><td  onclick="getScoreDetails(${match.match_id})"><i class="fa fa-plus-circle"></i> ${match.match_id}</td><td>${match.player_1}</td>
-                      <td>${match.player_2} <span class="d-none"><br/><span id="match_${match.match_id}"></span></span></td>
+              tr += `<tr><td  onclick="getScoreDetails(${match.match_id})"><i class="fa fa-plus-circle"></i> ${match.match_id}</td><td>${match.player_1}<span id="span_id_${match.match_id}" class="d-none"><br/><span id="match_${match.match_id}"></span></span></td>
+                      <td>${match.player_2}</td>
                       <td>${match.home_odd}${icon}</td>
                       <td>${match.away_odd}${icon_2}</td>
                       <td>${match.result}</td>
