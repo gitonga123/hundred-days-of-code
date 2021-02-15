@@ -140,7 +140,7 @@ class SofascoreController extends Controller
         $match_details = JsonMachine::fromFile($match_file, '/events');
         $index = 0;
         foreach ($match_details as $key => $value) {
-            
+
             if (array_key_exists('winnerCode', $value) && $value['tournament']['slug'] != 'ukraine-win-cup' && $value['winnerCode'] != 0) {
                 $event_date_time = $this->convertTimestampToDateTimeWithTimeZone(
                     $value['startTimestamp'], $date
@@ -563,7 +563,7 @@ class SofascoreController extends Controller
                         'competition' => $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'],
                         'home_player' => $value['homeTeam']['name'],
                         'away_player' => $value['awayTeam']['name'],
-                        'result' => $value['winnerCode']
+                        'result' => $value['winnerCode'],
                     ];
                 }
             }
@@ -670,12 +670,12 @@ class SofascoreController extends Controller
     public function updateSfDates()
     {
         $year = 2020;
-        $month = "08";
-        $day = 31;
+        $month = "07";
+        $day = 30;
         while ($day > 0) {
             $date = $year . '-' . $month . '-' . $day;
             if ($day < 10) {
-                $date = $year . '-' . $month . '-' . '0' .$day;
+                $date = $year . '-' . $month . '-' . '0' . $day;
             }
             SfDates::create(
                 [
@@ -684,5 +684,36 @@ class SofascoreController extends Controller
             );
             $day -= 1;
         }
+    }
+
+    /**
+     * Search Match scores
+     *
+     * @param int $match_id // unique match id
+     *
+     * @return mixed
+     */
+    public function searchMatchScores($match_id)
+    {
+        $match = Sofascore::where('match_id', $match_id)->first();
+        if (!$match) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Not found',
+                    'data' => [],
+                ], 404
+            );
+        }
+        return response()->json(
+            [
+                'success' => true,
+                'data' => [
+                    'home' => $match->home_score,
+                    'away' => $match->away_score,
+                ],
+            ],
+            200
+        );
     }
 }

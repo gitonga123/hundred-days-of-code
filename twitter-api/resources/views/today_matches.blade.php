@@ -171,6 +171,13 @@
 
         $('#timeClock').html("<span style='color: #fff'><strong>" + currentTimeString+"</strong></span>");
     }
+    function getScoreDetails(match_id) {
+      let newServerRqst = $.ajax({
+            url: `/search/match-score-details/${match_id}`,
+            data: {},
+            type: 'get'
+        });
+    }
     function getMatchDetails(match_id, compe) {
         $('#table_result_count').html(`<h5>Loading...</h5>`);
         var serverRqst = $.ajax({
@@ -214,8 +221,8 @@
                   icon_2 = `<i class="fa fa-sort-up text-success"></i>`;
               }
 
-              tr += `<tr><td>${match.match_id}</td><td>${match.player_1}</td>
-                      <td>${match.player_2}</td>
+              tr += `<tr><td  onclick="getScoreDetails(${match.match_id})"><i class="fa fa-plus-circle"></i> ${match.match_id}</td><td>${match.player_1}</td>
+                      <td>${match.player_2} <span class="d-none"><br/><span id="match_${match.match_id}"></span></span></td>
                       <td>${match.home_odd}${icon}</td>
                       <td>${match.away_odd}${icon_2}</td>
                       <td>${match.result}</td>

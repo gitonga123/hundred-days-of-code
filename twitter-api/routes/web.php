@@ -28,6 +28,7 @@ Route::get(
     }
 );
 
+Route::get('/search/match-score-details/{match_id}', 'SofascoreController@searchMatchScores');
 Route::get('/today/matches', 'SofascoreController@matchesForToday')->name('today_matches');
 Route::get('/search/match/{id}/{competition}', 'SofascoreController@searchMatchWithId');
 
