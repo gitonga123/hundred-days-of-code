@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Routing\Route as RoutingRoute;
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\Route;
-use App\Models\Sofascore;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,11 +20,7 @@ Route::get(
 Route::post('/search_match_records/score_home', 'SofascoreController@searchRecords');
 Route::post('/update_time_to_pick_event', 'SettingsController@store');
 
-Route::get(
-    '/tweets', function () {
-        return view('tweets');
-    }
-);
+Route::get('/tweet-timeline', 'Twitter@index');
 
 Route::get('/search/match-score-details/{match_id}', 'SofascoreController@searchMatchScores');
 Route::get('/today/matches', 'SofascoreController@matchesForToday')->name('today_matches');
@@ -35,4 +29,3 @@ Route::get('/search/match/{id}/{competition}', 'SofascoreController@searchMatchW
 Route::get('/update_score_home', 'SofascoreController@updateRecordsCorrectScore');
 
 Route::get('/score_home/date/{new_date?}', 'SofascoreController@index');
-
