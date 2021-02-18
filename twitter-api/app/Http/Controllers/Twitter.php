@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class Twitter extends Controller
 {
+    public $user_id;
+
+    public function __construct($user_id)
+    {
+        $this->user_id = $user_id;
+    }
+
     public function index()
     {
-        $time_lines = $this->getUserTimeline();
+        $time_lines = $this->getUserTimeline($this->user_id);
         array_map(
             array(
                 $this,
@@ -21,9 +29,8 @@ class Twitter extends Controller
         return response()->json(['success' => true, 'message' => 'Action Complete']);
     }
 
-    public function getUserTimeline()
+    public function getUserTimeline($user_id)
     {
-        $user_id = env('TWITTER_USER_ACCOUNT');
         $url = "https://api.twitter.com/2/users/{$user_id}/tweets?max_results=20";
         $token = env('TWITTER_BEARER_TOKEN');
         $response = Http::withToken($token)->get($url, ['max_results' => 10]);
@@ -51,8 +58,8 @@ class Twitter extends Controller
 
         $tweet = $this->getTweetInfo($connection, $tweet_id);
         $tweet_video = $this->getTweetVideo($tweet);
-        $source = $tweet_video[0]['url'];
-
+        
+        $source = $this->getVideoWithGreaterQuality($tweet_video);
         $file_name = "{$tweet_id}.mp4";
         $location = $this->getPathVideo($file_name);
         
@@ -65,6 +72,24 @@ class Twitter extends Controller
         curl_exec($ch);
         curl_close($ch);
         fclose($fp);
+    }
+
+    public function getVideoWithGreaterQuality($array_videos)
+    {
+        $max_val = $array_videos[0]['bitrate'];
+        $url = $array_videos[0]['url'];
+        foreach ($array_videos as $key => $value) {
+            $next_val = $value['bitrate'];
+            if ($next_val > $max_val) {
+                $max_val = $next_val;
+                if ($value['url']) {
+                    $url = $value['url'];
+                }
+                Log::info($url);
+            }
+        }
+
+        return $url;
     }
 
     public function getPathVideo($file_name)

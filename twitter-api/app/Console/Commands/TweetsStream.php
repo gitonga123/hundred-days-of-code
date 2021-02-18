@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use TwitterStreamingApi;
+use App\Http\Controllers\Twitter;
 
 class TweetsStream extends Command
 {
@@ -12,14 +12,14 @@ class TweetsStream extends Command
      *
      * @var string
      */
-    protected $signature = 'tweets:stream';
+    protected $signature = 'update:timeline {user_id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Stream the tweets';
+    protected $description = 'Pull timeline tweets argument user_id to pull timeline for';
 
     /**
      * Create a new command instance.
@@ -38,30 +38,11 @@ class TweetsStream extends Command
      */
     public function handle()
     {
-        TwitterStreamingApi::publicStream()
-            ->whenHears('#twilio', function (array $tweet) {
-                $tweet_data = [
-                    'text' => $tweet['text'],
-                    'user_name' => $tweet['user']['screen_name'],
-                    'name' => $tweet['user']['name'],
-                    'profile_image_url_https' => $tweet['user']['profile_image_url_https'],
-                    'retweet_count' => $tweet['retweet_count'],
-                    'reply_count' => $tweet['reply_count'],
-                    'favorite_count' => $tweet['favorite_count'],
-                ];
-                if (isset($tweet['extended_tweet'])) {
-                    $tweet_data['text'] = $tweet['extended_tweet']['full_text'];
-                }
+        $user_id = $this->argument('user_id');
+        $twitter = new Twitter($user_id);
+        $twitter->index();
 
-                if (isset($tweet['created_at'])) {
-                    $tweet_data['date'] = date("M d", strtotime($tweet['created_at']));
-                }
-
-                if (isset($tweet['extended_entities']['media'][0]['media_url'])) {
-                    $tweet_data['image'] = $tweet['extended_entities']['media'][0]['media_url'];
-                }
-                var_dump($tweet_data);
-            })
-            ->startListening();
+        $this->info('Successfully updated records.');
+        return 0;
     }
 }
