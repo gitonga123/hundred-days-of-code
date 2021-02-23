@@ -42,7 +42,7 @@ class MyHomePage extends StatelessWidget {
                       Expanded(child: Center()),
                       IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {}),
                       CircleAvatar(
-                        child: Image.asset("assets/images/dp_default.png"),
+                        child: Image.asset("images/dp_default.png"),
                       )
                     ],
                   ),
@@ -81,7 +81,7 @@ class MyHomePage extends StatelessWidget {
                             (e) => Card(
                           child: Column(
                             children: <Widget>[
-                              Image.asset("assets/images/image_$e.jpg"),
+                              Image.asset("images/image_$e.jpg"),
                             ],
                           ),
                         ),
