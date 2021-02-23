@@ -252,6 +252,8 @@
                       <td>${match.both_total}</td>
                       <td>${match.event_date}</td></tr>
                     `;
+            icon = ``;
+            icon_2 = ``;
           });
           table += tr;
           table += `</tbody></table>`;
