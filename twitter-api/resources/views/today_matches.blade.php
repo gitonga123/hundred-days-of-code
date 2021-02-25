@@ -243,8 +243,8 @@
 
               tr += `<tr><td  onclick="getScoreDetails(${match.match_id})"><i class="fa fa-plus-circle"></i> ${match.match_id}</td><td>${match.player_1}<span id="span_id_${match.match_id}" class="d-none"><br/><span id="match_${match.match_id}"></span></span></td>
                       <td>${match.player_2}</td>
-                      <td>${match.home_odd}${icon}</td>
-                      <td>${match.away_odd}${icon_2}</td>
+                      <td>${match.home_odd}</td>
+                      <td>${match.away_odd}</td>
                       <td>${match.result}</td>
                       <td>${match.correct_score}</td>
                       <td>${match.home_total}</td>
