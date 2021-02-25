@@ -57,14 +57,7 @@ class SofascoreController extends Controller
      */
     public function updateRecordsCorrectScore()
     {
-        $result = Sofascore::select(
-            'id',
-            'away_score',
-            'updated_score',
-            'correct_score',
-            'home_score',
-            'match_id'
-        )->where('updated_score', 0)->take(1000)->get();
+        $result = Sofascore::updatedScore(0)->get();
         foreach ($result as $record) {
             if ($record->home_score) {
                 $winner = $this->determineWinner(
@@ -96,16 +89,7 @@ class SofascoreController extends Controller
      */
     public function updateTotalScores()
     {
-        $result = Sofascore::select(
-            'id',
-            'away_score',
-            'updated_score',
-            'correct_score',
-            'home_score',
-            'match_id'
-        )->where(
-            'updated_score', 1
-        )->whereNotNull('correct_score')->take(1000)->get();
+        $result = Sofascore::UpdatedScore(1)->get();
         foreach ($result as $record) {
             if (!empty($record->home_score) && !empty($record->away_score)) {
                 $winner = $this->determineTotalScore(
