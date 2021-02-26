@@ -1,11 +1,12 @@
-arr = [1,2,1]
+arr = [1,2,3]
 
-arr_len = len(arr)-1
-count = 0
+max_val = max(arr)
+count = len(arr) - 1
+arr.sort()
 moves = 0
-current_value = arr[0]
 
-for i in range(arr_len, 0):
-    
-
+while count >= 1:
+    moves += arr[count] - arr[0]
+    count = count - 1
 print(moves)
+    
