@@ -137,6 +137,13 @@
                   <input name="actual_value_away" type="text" class="form-control" autocomplete="off"  placeholder="Actual Away" aria-label="Away" value="{{$request->actual_value_away}}">
                 </div>
               </div>
+              <div class="col-6">
+                <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                  <input type="hidden" name="include_all" value="0"/>
+                  <input name="include_all" type="checkbox" class="custom-control-input" id="customControlInline" value="1">
+                  <label class="custom-control-label" for="customControlInline">Include All</label>
+                </div>
+              </div>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
           </form>
         </div>
@@ -150,23 +157,22 @@
                 <table class="table table-striped table-hover" id="match_results_table_id">
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Home Team</th>
-                      <th scope="col">Away Team</th>
+                      <th scope="col">H Team</th>
+                      <th scope="col">A Team</th>
                       <th scope="col">Home</th>
                       <th scope="col">Away</th>
-                      <th scope="col">Home %</th>
-                      <th scope="col">Away %</th>
+                      <th scope="col">H %</th>
+                      <th scope="col">A %</th>
                       <th scope="col">Result</th>
                       <th scope="col">Score</th>
-                      <th scope="col">Competition</th>
                       <th scope="col">Event Date</th>
+                      <th scope="col">Both Total</th>
+                      <th scope="col">Competition</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($records as $match)
                     <tr>
-                      <th scope="row">{{$match->id}}</th>
                       <td>{{$match->player_1}}</td>
                       <td>{{$match->player_2}}</td>
                       <td>{{$match->home_odd}}
@@ -194,21 +200,22 @@
                       <td>{{$match->expected_value_away}} - {{$match->actual_value_away}}</td>
                       <td>{{$match->result}}</td>
                       <td>{{$match->correct_score}}</td>
-                      <td>{{$match->competition}}</td>
                       <td>{{$match->event_date}}</td>
+                      <td>{{$match->both_total}}</td>
+                      <td>{{$match->competition}}</td>
                     </tr>
                     @endforeach
 
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th></th>
                       <th scope="col">Home Team</th>
                       <th scope="col">Away Team</th>
                       <th scope="col">Home</th>
                       <th scope="col">Away</th>
                       <th scope="col">Home %</th>
                       <th scope="col">Away %</th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>

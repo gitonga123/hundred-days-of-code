@@ -492,6 +492,7 @@ class SofascoreController extends Controller
         $request->expected_value_home = '';
         $request->expected_value_away = '';
         $request->actual_value_away = '';
+        $request->include_all = 0;
         $total_records = Sofascore::count();
         return view('welcome', compact('competition', 'records', 'request', 'total_records'));
     }
@@ -504,15 +505,35 @@ class SofascoreController extends Controller
      */
     public function searchRecords(Request $request)
     {
+        $records = [];
         $search_params = $request->only(
             [
-                'home_odd', 'away_odd', 'competition', 'actual_value_home',
+                'home_odd', 'away_odd', 'actual_value_home',
                 'expected_value_home', 'expected_value_away', 'actual_value_away',
             ]
         );
         $new_search_params = array_filter($search_params);
+        if (!empty($new_search_params)) {
+            if ($request->include_all == "1") {
+                $competition = [
+                    'international TT Cup',
+                    'international Setka Cup',
+                    'russia Liga Pro',
+                    'international Setka Cup, Women',
+                    'international TT Cup, Women',
+                    'russia Liga Pro, Women',
+                ];
+            } else {
+                $competition = [$request->competition];
+            }
+            $records = Sofascore::where(
+                $new_search_params
+            )->whereIn(
+                'competition',
+                $competition
+            )->get();
+        }
         $competition = Sofascore::all('competition')->unique('competition');
-        $records = Sofascore::where($new_search_params)->get();
         $total_records = Sofascore::count();
 
         return view('welcome', compact('competition', 'records', 'request', 'total_records'));
