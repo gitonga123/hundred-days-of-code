@@ -515,14 +515,7 @@ class SofascoreController extends Controller
         $new_search_params = array_filter($search_params);
         if (!empty($new_search_params)) {
             if ($request->include_all == "1") {
-                $competition = [
-                    'international TT Cup',
-                    'international Setka Cup',
-                    'russia Liga Pro',
-                    'international Setka Cup, Women',
-                    'international TT Cup, Women',
-                    'russia Liga Pro, Women',
-                ];
+                $competition = $this->getCompetitionToSearch();
             } else {
                 $competition = [$request->competition];
             }
@@ -536,7 +529,65 @@ class SofascoreController extends Controller
         $competition = Sofascore::all('competition')->unique('competition');
         $total_records = Sofascore::count();
 
-        return view('welcome', compact('competition', 'records', 'request', 'total_records'));
+        return view(
+            'welcome',
+            compact(
+                'competition',
+                'records',
+                'request',
+                'total_records'
+            )
+        );
+    }
+
+    protected function getCompetitionToSearch()
+    {
+        return [
+            'international TT Cup',
+            'international Setka Cup',
+            'russia Liga Pro',
+            'international Setka Cup, Women',
+            'international TT Cup, Women',
+            'russia Liga Pro, Women',
+        ];
+    }
+
+    public function viewSimilarRecords(Request $request, Sofascore $sofascore)
+    {
+        $request = new \stdClass;
+        $request->home_odd = $sofascore->home_odd;
+        $request->away_odd = $sofascore->away_odd;
+        $request->competition = $sofascore->competition;
+        $request->actual_value_home = $sofascore->actual_value_home;
+        $request->expected_value_home = $sofascore->expected_value_home;
+        $request->expected_value_away = $sofascore->expected_value_away;
+        $request->actual_value_away = $sofascore->actual_value_away;
+        $competition = $this->getCompetitionToSearch();
+        $new_search_params = [
+            'home_odd' => $sofascore->home_odd,
+            'away_odd' => $sofascore->away_odd,
+            'actual_value_home' => $sofascore->actual_value_home,
+            'expected_value_home' => $sofascore->expected_value_home,
+            'expected_value_away' => $sofascore->expected_value_away,
+            'actual_value_away' => $sofascore->actual_value_away,
+        ];
+        $records = Sofascore::where(
+            $new_search_params
+        )->whereIn(
+            'competition',
+            $this->getCompetitionToSearch()
+        )->get();
+        $competition = Sofascore::all('competition')->unique('competition');
+        $total_records = Sofascore::count();
+        return view(
+            'welcome',
+            compact(
+                'competition',
+                'records',
+                'request',
+                'total_records'
+            )
+        );
     }
 
     /**
@@ -552,7 +603,7 @@ class SofascoreController extends Controller
         $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $today) : $this->checkIfFileExists($base_file);
         $store_map_id = [];
         $match_details = JsonMachine::fromFile($match_file, '/events');
-        $current_time = Setting::whereNotNull('current_time')->orderBy('id', 'desc')->first();
+        $current_time = Setting::select('current_time')->orderBy('id', 'desc')->first();
         $date_time = $current_time->current_time;
         $result = true;
         foreach ($match_details as $key => $value) {
