@@ -116,7 +116,7 @@ class SofascoreController extends Controller
      * @param string $date // date which the event took place
      * @param string $predicted_file //path to the file location
      *
-     * @return void
+     * @return int
      */
     public function processMatchResults($match_file, $date, $predicted_file)
     {
