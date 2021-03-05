@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:track_finances/home_page.dart';
+import 'package:track_finances/screens/home_page.dart';
 
 void main() {
   runApp(MyApp());

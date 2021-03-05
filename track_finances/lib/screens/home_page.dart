@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:track_finances/screens/header.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        elevation: 0,
+        elevation: 1,
         leading: IconButton(
             icon: const Icon(Icons.short_text),
             onPressed: () {
@@ -31,6 +32,9 @@ class _HomePageState extends State<HomePage> {
                 print("Actions");
               })
         ],
+      ),
+      body: Column(
+        children: [Header()],
       ),
     );
   }
