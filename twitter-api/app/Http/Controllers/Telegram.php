@@ -9,22 +9,13 @@ use NotificationChannels\Telegram\TelegramFile;
 
 class Telegram extends Controller
 {
-    public function via($notifiable)
-    {
-        return [TelegramChannel::class];
-    }
-    
+    /**
+     * Index Method Entry function
+     *
+     * @return void
+     */    
     public function index()
     {
 
-    }
-
-    public function toTelegram($notifiable)
-    {
-
-        $file = Storage::disk('local')->path('1362122141735378950.mp4');
-        return TelegramFile::create()->content('Sample *video* notification!')
-            >to($notifiable->telegram_user_id) 
-            ->video($file);
     }
 }

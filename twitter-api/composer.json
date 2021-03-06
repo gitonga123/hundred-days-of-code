@@ -22,11 +22,13 @@
         "spatie/laravel-twitter-streaming-api": "^1.4"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "phpstan/phpstan": "^0.12.80",
         "phpunit/phpunit": "^9.3.3"
     },
     "config": {

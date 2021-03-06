@@ -225,6 +225,7 @@
                                         <th scope="col">Away Total</th>
                                         <th scope="col">Both Total</th>
                                         <th scope="col">Event Date</th>
+                                        <th scope="col">Action</th>
                                       </tr>
                                     </thead>
                                     <tbody>`;
@@ -250,7 +251,9 @@
                       <td>${match.home_total}</td>
                       <td>${match.away_total}</td>
                       <td>${match.both_total}</td>
-                      <td>${match.event_date}</td></tr>
+                      <td>${match.event_date}</td>
+                      <td><a href="/view_similar_matches/${match.id}" target="_blank"><i class="fa fa-eye"></i></a></td>
+                      </tr>
                     `;
             icon = ``;
             icon_2 = ``;

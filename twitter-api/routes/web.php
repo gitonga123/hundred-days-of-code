@@ -1,6 +1,5 @@
 <?php
 
-use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +26,9 @@ Route::get('/today/matches', 'SofascoreController@matchesForToday')->name('today
 Route::get('/search/match/{id}/{competition}', 'SofascoreController@searchMatchWithId');
 
 Route::get('/update_score_home', 'SofascoreController@updateRecordsCorrectScore');
+Route::get(
+    '/view_similar_matches/{sofascore}',
+    'SofascoreController@viewSimilarRecords'
+);
 
 Route::get('/score_home/date/{new_date?}', 'SofascoreController@index');

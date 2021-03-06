@@ -25,6 +25,18 @@ class Sofascore extends Model
         'away_score',
         'match_id',
         'event_date',
-        'correct_score'
+        'correct_score',
     ];
+
+    public function scopeUpdatedScore($query, $value)
+    {
+        $query->select(
+            'id',
+            'away_score',
+            'updated_score',
+            'correct_score',
+            'home_score',
+            'match_id'
+        )->where('updated_score', $value)->take(1000);
+    }
 }
