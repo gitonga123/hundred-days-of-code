@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:track_finances/screens/button_between_header_body.dart';
 import 'package:track_finances/screens/header.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,7 +35,13 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Column(
-        children: [Header()],
+        children: [
+          Header(),
+          SizedBox(
+            height: 10,
+          ),
+          ButtonsBetween()
+        ],
       ),
     );
   }

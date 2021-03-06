@@ -94,7 +94,7 @@ class Header extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {},
                   child: Container(
-                    width: mediaQuery.size.width * 0.055,
+                    width: mediaQuery.size.width * 0.05,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
