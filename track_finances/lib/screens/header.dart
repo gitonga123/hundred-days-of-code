@@ -12,50 +12,33 @@ class Header extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 50),
       width: mediaQuery.size.width,
       decoration: BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(50),
-          bottomRight: Radius.circular(50)
-        )
-      ),
+          color: primaryColor,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50))),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Ksh. ', style: TextStyle(
+          Text(
+            'Ksh. 500K',
+            style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Nunito',
                 fontSize: 50,
                 fontWeight: FontWeight.w700,
-                fontStyle: FontStyle.normal
-              ),),
-              SizedBox(width: 0.5,),
-              Text(
-                "500, 000/=",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Nunito',
-                    fontSize: 50,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal
-                ),
-              ),
-            ],
+                fontStyle: FontStyle.normal),
           ),
-          Text("Total Account Balance",
+          Text("Account Balance",
               style: TextStyle(
                   color: Colors.white.withOpacity(0.5),
                   fontFamily: 'Nunito',
                   fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal)),
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic)),
           SizedBox(
             height: 10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: OutlinedButton(
@@ -66,29 +49,24 @@ class Header extends StatelessWidget {
                       primary: Colors.black,
                       backgroundColor: Colors.white,
                       shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(
-                              24
-                          ))
-                      )
-                  ),
+                          borderRadius: BorderRadius.all(Radius.circular(24)))),
                   child: Container(
-                    width: mediaQuery.size.width * 0.1,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
                           Icons.playlist_add,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                         const SizedBox(
-                          width: 4,
+                          width: 2,
                         ),
                         const Text(
                           "Add Transaction",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: 'Nunito',
-                              color: Colors.white,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -96,39 +74,41 @@ class Header extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
+              const SizedBox(width: 10,),
               Expanded(
-                child: TextButton(
-                  onPressed: () {},
+                child: OutlinedButton(
+                  onPressed: () {
+                    print("Add new transaction");
+                  },
+                  style: OutlinedButton.styleFrom(
+                      primary: Colors.redAccent,
+                      backgroundColor: Colors.redAccent,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(24)))),
                   child: Container(
-                    width: mediaQuery.size.width * 0.05,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Reports',
+                        const Text(
+                          "Reports",
                           style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 18,
                               fontFamily: 'Nunito',
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Icon(
-                          Icons.navigate_next,
-                          color: Colors.black,
+                        const SizedBox(
+                          width: 2,
+                        ),
+                        const Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
                         ),
                       ],
                     ),
                   ),
-                  style: TextButton.styleFrom(
-                      primary: Colors.black,
-                      backgroundColor: Colors.white,
-                      shape: const BeveledRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4)))),
                 ),
-              )
+              ),
             ],
           ),
           SizedBox(

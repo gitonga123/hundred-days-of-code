@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'package:track_finances/screens/header.dart';
+import 'package:track_finances/screens/home_page.dart';
 
 void main() => runApp(MainPage());
 
@@ -30,7 +30,7 @@ class MainPage extends StatelessWidget {
         fontFamily: 'RocknRollOne',
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: Container(),
+      home: HomePage(),
     );
   }
 }
