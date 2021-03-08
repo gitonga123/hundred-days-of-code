@@ -62,6 +62,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "ffi",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "file",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///home/daniel/snap/flutter/common/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -70,6 +82,18 @@
     {
       "name": "flutter_test",
       "rootUri": "file:///home/daniel/snap/flutter/common/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "http",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -106,6 +130,60 @@
     {
       "name": "path",
       "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider_linux",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider_macos",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider_platform_interface",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_provider_windows",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "pedantic",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "platform",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "plugin_platform_interface",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "process",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -170,13 +248,25 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "win32",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "xdg_directories",
+      "rootUri": "file:///home/daniel/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "track_finances",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-03-06T18:25:24.565734Z",
+  "generated": "2021-03-08T13:38:17.860011Z",
   "generator": "pub",
   "generatorVersion": "2.12.0"
 }

@@ -1,8 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:track_finances/screens/home_page.dart';
+import 'package:track_finances/widget/button_widget.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MianPage());
+}
+
+class MianPage extends StatefulWidget {
+  @override
+  _MianPageState createState() => _MianPageState();
+}
+
+class _MianPageState extends State<MianPage> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PDF Viewer',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.all(32),
+            child: Column(
+              children: [
+                ButtonWidget(
+                  "Asset PDF", () => {
+
+                  }
+                ),
+                SizedBox(height: 16,),
+                ButtonWidget(
+                  "File PDF", () => {
+
+                  }
+                ),
+                SizedBox(height: 16,),
+                ButtonWidget(
+                  "Network PDF", () => {
+
+                  }
+                ),
+                SizedBox(height: 16,),
+                ButtonWidget(
+                  "Firebase PDF", () => {
+
+                  }
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget ButtonWidget(String text, () {}) {
+
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +77,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Church Developement Fund Tracker',
+      title: 'Church Fund Tracker',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: _1A8FFF,
