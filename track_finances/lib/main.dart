@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-void main() {
-  runApp(MainPage());
-}
+import 'package:track_finances/screens/header.dart';
+
+void main() => runApp(MainPage());
 
 class MainPage extends StatelessWidget {
   static const Map<int, Color> colorMap = {
