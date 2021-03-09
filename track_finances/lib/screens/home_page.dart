@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:track_finances/screens/button_between.dart';
 import 'package:track_finances/screens/header.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,6 +40,10 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 10,
           ),
+          ButtonBetween(),
+          SizedBox(
+            height: 10,
+          )
         ],
       ),
     );
