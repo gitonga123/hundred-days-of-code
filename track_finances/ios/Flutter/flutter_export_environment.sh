@@ -1,10 +1,10 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/daniel/snap/flutter/common/flutter"
-export "FLUTTER_APPLICATION_PATH=/var/www/html/hundred-days-of-code/track_finances"
-export "FLUTTER_TARGET=lib/main.dart"
+export "FLUTTER_ROOT=C:\Users\mutwi\Documents\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\mutwi\Documents\GitHub\hundred-days-of-code\track_finances"
+export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
-export "SYMROOT=${SOURCE_ROOT}/../build/ios"
+export "SYMROOT=${SOURCE_ROOT}/../build\ios"
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"
 export "DART_OBFUSCATION=false"

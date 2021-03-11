@@ -1,5 +1,5 @@
 name: track_finances
-description: A new Flutter project.
+description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -38,6 +38,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -68,41 +69,41 @@ flutter:
   fonts:
     - family: RocknRollOne
       fonts:
-        - asset: fonts/RocknRollOne-Regular.ttf
+        - asset: assets/fonts/RocknRollOne-Regular.ttf
           weight: 400
     - family: Nunito
       fonts:
-        - asset: fonts/Nunito-Black.ttf
+        - asset: assets/fonts/Nunito-Black.ttf
           weight: 900
-        - asset: fonts/Nunito-BlackItalic.ttf
+        - asset: assets/fonts/Nunito-BlackItalic.ttf
           weight: 900
           style: italic
-        - asset: fonts/Nunito-Bold.ttf
+        - asset: assets/fonts/Nunito-Bold.ttf
           weight: 700
-        - asset: fonts/Nunito-BoldItalic.ttf
+        - asset: assets/fonts/Nunito-BoldItalic.ttf
           weight: 700
           style: italic
-        - asset: fonts/Nunito-ExtraBold.ttf
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
           weight: 800
-        - asset: fonts/Nunito-ExtraLight.ttf
+        - asset: assets/fonts/Nunito-ExtraLight.ttf
           weight: 200
-        - asset: fonts/Nunito-LightItalic.ttf
+        - asset: assets/fonts/Nunito-LightItalic.ttf
           weight: 200
           style: italic
-        - asset: fonts/Nunito-Italic.ttf
+        - asset: assets/fonts/Nunito-Italic.ttf
           style: italic
-        - asset: fonts/Nunito-Light.ttf
+        - asset: assets/fonts/Nunito-Light.ttf
           weight: 300
-        - asset: fonts/Nunito-LightItalic.ttf
+        - asset: assets/fonts/Nunito-LightItalic.ttf
           weight: 300
           style: italic
-        - asset: fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-Regular.ttf
           weight: 400
-        - asset: fonts/Nunito-SemiBold.ttf
+        - asset: assets/fonts/Nunito-SemiBold.ttf
           weight: 600
-        - asset: fonts/Nunito-SemiBoldItalic.ttf
+        - asset: assets/fonts/Nunito-SemiBoldItalic.ttf
           weight: 600
           style: italic
   #
   # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+  # see https://flutter.dev/custom-assets/fonts/#from-packages

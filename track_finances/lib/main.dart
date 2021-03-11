@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:track_finances/screens/home_page.dart';
 import 'package:track_finances/widget/button_widget.dart';
 
+<<<<<<< HEAD
 void main() {
   runApp(MianPage());
 }
@@ -58,8 +61,11 @@ class _MianPageState extends State<MianPage> {
 
   }
 }
+=======
+void main() => runApp(MainPage());
+>>>>>>> 926b047268e87732da3d4d231866e9af08ef2458
 
-class MyApp extends StatelessWidget {
+class MainPage extends StatelessWidget {
   static const Map<int, Color> colorMap = {
     50: Color.fromRGBO(26, 143, 255, 0.1),
     100: Color.fromRGBO(26, 143, 255, 0.2),
@@ -80,9 +86,10 @@ class MyApp extends StatelessWidget {
       title: 'Church Fund Tracker',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: _1A8FFF,
-          fontFamily: 'RocknRollOne',
-          visualDensity: VisualDensity.adaptivePlatformDensity),
+        primarySwatch: _1A8FFF,
+        fontFamily: 'RocknRollOne',
+        visualDensity: VisualDensity.adaptivePlatformDensity
+      ),
       home: HomePage(),
     );
   }

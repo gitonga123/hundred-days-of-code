@@ -1,9 +1,9 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/home/daniel/snap/flutter/common/flutter
-FLUTTER_APPLICATION_PATH=/var/www/html/hundred-days-of-code/track_finances
-FLUTTER_TARGET=lib/main.dart
+FLUTTER_ROOT=C:\Users\mutwi\Documents\flutter
+FLUTTER_APPLICATION_PATH=C:\Users\mutwi\Documents\GitHub\hundred-days-of-code\track_finances
+FLUTTER_TARGET=lib\main.dart
 FLUTTER_BUILD_DIR=build
-SYMROOT=${SOURCE_ROOT}/../build/ios
+SYMROOT=${SOURCE_ROOT}/../build\ios
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
 DART_OBFUSCATION=false
