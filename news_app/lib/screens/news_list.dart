@@ -52,27 +52,31 @@ class _NewsListState extends State<NewsList> {
   }
 
   Widget _listNews(index) {
-    return Expanded(
-      child: ListTile(
-        title: Text(
-          _news[index].titles,
-          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+    return Row(
+      children: [
+        Expanded(
+          child: ListTile(
+            title: Text(
+              _news[index].titles,
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+            ),
+            subtitle: Text(
+              _news[index].author,
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16),
+            ),
+            trailing: IconButton(
+                iconSize: 16,
+                color: Colors.black87,
+                alignment: Alignment.center,
+                icon: Icon(Icons.arrow_forward_ios),
+                onPressed: () => print("Am clicked")
+            ),
+          ),
         ),
-        subtitle: Text(
-          _news[index].author,
-          style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: 16),
-        ),
-        trailing: IconButton(
-            iconSize: 16,
-            color: Colors.black87,
-            alignment: Alignment.bottomCenter,
-            icon: Icon(Icons.arrow_forward_ios),
-            onPressed: () => print("Am clicked")
-        ),
-      ),
+      ],
     );
   }
 }
