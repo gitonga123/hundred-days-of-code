@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/screens/news_list.dart';
 
 class MyHomePage extends StatelessWidget {
   @override
@@ -13,6 +14,7 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
         elevation: 2,
       ),
+      body: NewsList(),
     );
   }
 }
