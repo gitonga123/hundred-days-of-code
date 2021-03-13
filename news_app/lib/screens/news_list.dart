@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:news_app/model/news.dart';
+import 'package:news_app/screens/view_news_item.dart';
 
 class NewsList extends StatefulWidget {
   @override
@@ -57,11 +58,11 @@ class _NewsListState extends State<NewsList> {
         Expanded(
           child: ListTile(
             title: Text(
-              _news[index].titles,
+              _newsInApp[index].title,
               style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
             ),
             subtitle: Text(
-              _news[index].author,
+              _newsInApp[index].publisher,
               style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
@@ -69,10 +70,17 @@ class _NewsListState extends State<NewsList> {
             ),
             trailing: IconButton(
                 iconSize: 16,
-                color: Colors.black87,
+                color: Colors.black,
                 alignment: Alignment.center,
                 icon: Icon(Icons.arrow_forward_ios),
-                onPressed: () => print("Am clicked")
+                onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) {
+                      // return Container();
+                      return new NewsItem( _newsInApp[index]);
+                    }
+                  )
+                ),
             ),
           ),
         ),
