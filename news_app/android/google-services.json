@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "344554556678",
+    "firebase_url": "https://crudlearn.firebaseio.com",
+    "project_id": "crudlearn",
+    "storage_bucket": "crudlearn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344554556678:android:0e9d0bf120e585fb716287",
+        "android_client_info": {
+          "package_name": "com.example.news_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344554556678-bejhbij7md49f957i8hf3d3l3hjpf04v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4p3j84FXueYh2gYlDYCsOPnXrWp3ib9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344554556678-bejhbij7md49f957i8hf3d3l3hjpf04v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344554556678:android:f217a184b46924af",
+        "android_client_info": {
+          "package_name": "com.example.otbafrica.crudlearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344554556678-haa0u1opf9utijjir90tvle4n4h6hnko.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.otbafrica.crudlearn",
+            "certificate_hash": "2be9410c65cabb01c6a7abbc491aa87ca717ed44"
+          }
+        },
+        {
+          "client_id": "344554556678-bejhbij7md49f957i8hf3d3l3hjpf04v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4p3j84FXueYh2gYlDYCsOPnXrWp3ib9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344554556678-bejhbij7md49f957i8hf3d3l3hjpf04v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

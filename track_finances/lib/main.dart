@@ -1,69 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'package:track_finances/screens/home_page.dart';
-import 'package:track_finances/widget/button_widget.dart';
-
-<<<<<<< HEAD
-void main() {
-  runApp(MianPage());
-}
-
-class MianPage extends StatefulWidget {
-  @override
-  _MianPageState createState() => _MianPageState();
-}
-
-class _MianPageState extends State<MianPage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PDF Viewer',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.all(32),
-            child: Column(
-              children: [
-                ButtonWidget(
-                  "Asset PDF", () => {
-
-                  }
-                ),
-                SizedBox(height: 16,),
-                ButtonWidget(
-                  "File PDF", () => {
-
-                  }
-                ),
-                SizedBox(height: 16,),
-                ButtonWidget(
-                  "Network PDF", () => {
-
-                  }
-                ),
-                SizedBox(height: 16,),
-                ButtonWidget(
-                  "Firebase PDF", () => {
-
-                  }
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget ButtonWidget(String text, () {}) {
-
-  }
-}
-=======
+import 'package:track_finances/screens/login.dart';
 void main() => runApp(MainPage());
->>>>>>> 926b047268e87732da3d4d231866e9af08ef2458
+
 
 class MainPage extends StatelessWidget {
   static const Map<int, Color> colorMap = {
@@ -90,7 +30,7 @@ class MainPage extends StatelessWidget {
         fontFamily: 'RocknRollOne',
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

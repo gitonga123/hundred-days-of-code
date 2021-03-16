@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "978127839057",
+    "project_id": "track-finances-ceff5",
+    "storage_bucket": "track-finances-ceff5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978127839057:android:24236fe4979776b5693d70",
+        "android_client_info": {
+          "package_name": "com.example.track_finances"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978127839057-3hkac5rebaja1hes4vhnpoipbbcas8cd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOoWGSEXykASpRp0Nz29BPVpAd86jqFUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978127839057-3hkac5rebaja1hes4vhnpoipbbcas8cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

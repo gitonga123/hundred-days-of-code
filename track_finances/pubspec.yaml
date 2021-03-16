@@ -24,10 +24,13 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^5.0.0
-  charts_flutter: ^0.9.0
-  intl: ^0.15.2
+  charts_flutter: ^0.10.0
+  intl: ^0.17.0
   path_provider: ^2.0.1
   http: ^0.13.0
+  firebase_auth: ^1.0.1
+  firebase_auth_web: ^1.0.2
+  flutter_vector_icons: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
