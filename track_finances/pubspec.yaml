@@ -28,6 +28,7 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.1
   http: ^0.13.0
+  firebase_core: ^1.0.1
   firebase_auth: ^1.0.1
   firebase_auth_web: ^1.0.2
   flutter_vector_icons: ^1.0.0

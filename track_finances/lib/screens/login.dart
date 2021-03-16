@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:track_finances/config/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:track_finances/screens/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,23 +13,24 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GlobalKey<FormState> _formKey =  GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email, password;
 
-   isUserLoggedIn() {
+  isUserLoggedIn() {
     if (FirebaseAuth.instance.currentUser != null) {
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => HomePage()
-        ));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 
   @override
-  void initState()
-  {
+  void initState() {
     super.initState();
+    Firebase.initializeApp().whenComplete(() {
+      print("completed");
+      setState(() {});
+    });
     this.isUserLoggedIn();
   }
 
@@ -56,7 +58,13 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.all(5),
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
-        onChanged: (value) {
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Enter Email';
+          }
+          return null;
+        },
+        onSaved: (value) {
           setState(() {
             email = value;
           });
@@ -120,6 +128,7 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
   }
+
   Widget _buildOrRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -203,10 +212,18 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                _buildEmailRow(),
-                _buildPasswordRow(),
-                SizedBox(height: 30,),
-                _buildLoginButton()
+                Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _buildEmailRow(),
+                        _buildPasswordRow(),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        _buildLoginButton()
+                      ],
+                    ))
               ],
             ),
           ),
@@ -234,14 +251,12 @@ class _LoginPageState extends State<LoginPage> {
                         fontFamily: 'Nunito'),
                   ),
                   TextSpan(
-                    text: 'Sign Up',
-                    style: TextStyle(
-                      color: mainColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Nunito'
-                    )
-                  )
+                      text: 'Sign Up',
+                      style: TextStyle(
+                          color: mainColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Nunito'))
                 ]),
               )),
         )
@@ -256,24 +271,24 @@ class _LoginPageState extends State<LoginPage> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Color(0xfff2f3f7),
           body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: const Radius.circular(70),
-                      bottomRight: const Radius.circular(70))),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [_buildLogo(), _buildContainer(), _buildSignUpBtn()],
-          )
-        ],
-      )),
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: mainColor,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: const Radius.circular(70),
+                          bottomRight: const Radius.circular(70))),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [_buildLogo(), _buildContainer(), _buildSignUpBtn()],
+              )
+            ],
+          )),
     );
   }
 }
