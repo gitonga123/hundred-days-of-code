@@ -8,6 +8,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "blurhash_flutter",
+      "rootUri": "file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/blurhash_flutter-0.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0",
       "packageUri": "lib/",
@@ -54,6 +60,12 @@
       "rootUri": "file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "email_validator",
+      "rootUri": "file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-1.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "1.24"
     },
     {
       "name": "fake_async",
@@ -320,7 +332,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-03-16T09:10:00.644136Z",
+  "generated": "2021-03-16T14:06:13.292552Z",
   "generator": "pub",
   "generatorVersion": "2.12.1"
 }

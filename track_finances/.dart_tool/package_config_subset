@@ -6,6 +6,10 @@ async
 2.12
 file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.5.0/
 file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.5.0/lib/
+blurhash_flutter
+2.1
+file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/blurhash_flutter-0.1.0/
+file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/blurhash_flutter-0.1.0/lib/
 boolean_selector
 2.12
 file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/
@@ -38,6 +42,10 @@ cupertino_icons
 2.12
 file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.2/
 file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.2/lib/
+email_validator
+1.24
+file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-1.0.6/
+file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-1.0.6/lib/
 fake_async
 2.12
 file:///C:/Users/mutwi/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/

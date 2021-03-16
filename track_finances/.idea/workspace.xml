@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0991fc53-e9f7-44b0-a501-359af351b3f8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/images/error_loading.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/mck_logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/loader.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/login.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
@@ -79,37 +84,37 @@
       <screen x="0" y="0" width="1600" height="900" />
     </state>
     <state x="392" y="91" key="#Plugins/0.0.1600.900@0.0.1600.900" timestamp="1615879037690" />
-    <state x="100" y="100" width="1400" height="700" key="AVDManager" timestamp="1615876228252">
+    <state x="100" y="100" width="1400" height="700" key="AVDManager" timestamp="1615901370329">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
-    <state x="100" y="100" width="1400" height="700" key="AVDManager/0.0.1600.900@0.0.1600.900" timestamp="1615876228252" />
+    <state x="100" y="100" width="1400" height="700" key="AVDManager/0.0.1600.900@0.0.1600.900" timestamp="1615901370329" />
     <state x="580" y="205" key="FileChooserDialogImpl" timestamp="1615875600709">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
     <state x="580" y="205" key="FileChooserDialogImpl/0.0.1600.900@0.0.1600.900" timestamp="1615875600709" />
-    <state width="754" height="221" key="GridCell.Tab.0.bottom" timestamp="1615886289397">
+    <state width="756" height="222" key="GridCell.Tab.0.bottom" timestamp="1615903792018">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
-    <state width="754" height="221" key="GridCell.Tab.0.bottom/0.0.1600.900@0.0.1600.900" timestamp="1615886289397" />
-    <state width="754" height="221" key="GridCell.Tab.0.center" timestamp="1615886289397">
+    <state width="756" height="222" key="GridCell.Tab.0.bottom/0.0.1600.900@0.0.1600.900" timestamp="1615903792018" />
+    <state width="756" height="222" key="GridCell.Tab.0.center" timestamp="1615903792018">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
-    <state width="754" height="221" key="GridCell.Tab.0.center/0.0.1600.900@0.0.1600.900" timestamp="1615886289397" />
-    <state width="754" height="221" key="GridCell.Tab.0.left" timestamp="1615886289397">
+    <state width="756" height="222" key="GridCell.Tab.0.center/0.0.1600.900@0.0.1600.900" timestamp="1615903792018" />
+    <state width="756" height="222" key="GridCell.Tab.0.left" timestamp="1615903792018">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
-    <state width="754" height="221" key="GridCell.Tab.0.left/0.0.1600.900@0.0.1600.900" timestamp="1615886289397" />
-    <state width="754" height="221" key="GridCell.Tab.0.right" timestamp="1615886289397">
+    <state width="756" height="222" key="GridCell.Tab.0.left/0.0.1600.900@0.0.1600.900" timestamp="1615903792018" />
+    <state width="756" height="222" key="GridCell.Tab.0.right" timestamp="1615903792018">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
-    <state width="754" height="221" key="GridCell.Tab.0.right/0.0.1600.900@0.0.1600.900" timestamp="1615886289397" />
+    <state width="756" height="222" key="GridCell.Tab.0.right/0.0.1600.900@0.0.1600.900" timestamp="1615903792018" />
     <state x="301" y="95" key="SettingsEditor" timestamp="1615878255038">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
     <state x="301" y="95" key="SettingsEditor/0.0.1600.900@0.0.1600.900" timestamp="1615878255038" />
-    <state x="463" y="190" width="672" height="678" key="search.everywhere.popup" timestamp="1615881574696">
+    <state x="463" y="190" width="672" height="678" key="search.everywhere.popup" timestamp="1615901064259">
       <screen x="0" y="0" width="1600" height="900" />
     </state>
-    <state x="463" y="190" width="672" height="678" key="search.everywhere.popup/0.0.1600.900@0.0.1600.900" timestamp="1615881574696" />
+    <state x="463" y="190" width="672" height="678" key="search.everywhere.popup/0.0.1600.900@0.0.1600.900" timestamp="1615901064259" />
   </component>
 </project>

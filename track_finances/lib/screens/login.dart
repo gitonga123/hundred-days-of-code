@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
@@ -6,6 +7,7 @@ import 'package:track_finances/config/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:track_finances/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -34,6 +36,59 @@ class _LoginPageState extends State<LoginPage> {
     this.isUserLoggedIn();
   }
 
+  login() async {
+    print("Hello World");
+    print(email);
+    print(password);
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        print(UserCredential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          showError('No user Found for that email.');
+        } else if (e.code == 'user-not-found') {
+          showError('No user Found for that email.');
+        }
+      }
+    }
+  }
+
+  void showError(String errorMessage) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Error',
+              style: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontWeight: FontWeight.w900,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 30,
+                  color: Colors.redAccent),
+            ),
+            content: Text(
+              errorMessage,
+              style: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontStyle: FontStyle.normal,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'))
+            ],
+          );
+        });
+  }
+
   Widget _buildLogo() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -59,13 +114,14 @@ class _LoginPageState extends State<LoginPage> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
-          if (value.isEmpty) {
-            return 'Enter Email';
-          }
-          return null;
+          if (value.isEmpty) return 'Enter Email';
+          bool isValid = EmailValidator.validate(value);
+          if (!isValid) return 'Enter a valid email';
+          return '';
         },
         onSaved: (value) {
           setState(() {
+            print(value);
             email = value;
           });
         },
@@ -85,8 +141,15 @@ class _LoginPageState extends State<LoginPage> {
       child: TextFormField(
         keyboardType: TextInputType.text,
         obscureText: true,
-        onChanged: (value) {
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Enter Password';
+          }
+          return '';
+        },
+        onSaved: (value) {
           setState(() {
+            print(value);
             password = value;
           });
         },
@@ -109,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
           width: 5 * (MediaQuery.of(context).size.width / 10),
           margin: EdgeInsets.only(bottom: 15),
           child: ElevatedButton(
-            onPressed: () => print("Login Button Pressed"),
+            onPressed: () => login(),
             style: ElevatedButton.styleFrom(
                 primary: mainColor,
                 shadowColor: mainColor,
