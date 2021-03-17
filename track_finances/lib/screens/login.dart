@@ -30,9 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   login() async {
     if (_formKey.currentState.validate()) {
       dynamic result = await _auth.loginWithEmailAndPassword(email, password);
-      print(result);
       if (result == null) {
-        print('Please enter a valid email and password');
         showError('Please Enter a valid email and password');
       }
 

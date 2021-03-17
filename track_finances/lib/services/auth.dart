@@ -16,7 +16,6 @@ class AuthService {
     try {
       return await _auth.signOut();
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
@@ -25,6 +24,7 @@ class AuthService {
     try {
       UserCredential userCredential = await _auth
           .signInWithEmailAndPassword(email: email, password: password);
+      print(userCredential.user);
       User user = userCredential.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -39,7 +39,6 @@ class AuthService {
       User user = userCredential.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }

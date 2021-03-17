@@ -19,10 +19,10 @@ class _HomePageState extends State<HomePage> {
         elevation: 1,
         leading: IconButton(
             icon: const Icon(
-              vector_icons.Ionicons.log_out_outline
+              Icons.short_text
             ),
             onPressed: () {
-              dynamic result = _auth.logout();
+              print("Menu button clicked");
             }),
         centerTitle: true,
         title: const Text(
@@ -34,9 +34,11 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: <Widget>[
           IconButton(
-              icon: const Icon(Icons.person_outline_rounded),
+              icon: const Icon(
+                  vector_icons.Ionicons.log_out_outline
+              ),
               onPressed: () {
-                print("Actions");
+                dynamic result = _auth.logout();
               })
         ],
       ),
