@@ -9,8 +9,38 @@ class AuthService {
 
   // auth change user stream
   Stream<UserModel.User> get userStatus {
-    return _auth
-        .authStateChanges()
-        .map(_userFromFirebaseUser);
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
+  }
+
+  Future logout() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future loginWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth
+          .signInWithEmailAndPassword(email: email, password: password);
+      User user = userCredential.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future registerWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      User user = userCredential.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }

@@ -20,7 +20,7 @@ class _LoadingState extends State<Loading> {
   Widget build(BuildContext context) {
     return Container(
         child: BlurHash(
-          hash: hash,
+          hash: hash
         )
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:track_finances/screens/button_between.dart';
 import 'package:track_finances/screens/header.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
+import 'package:track_finances/services/auth.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,15 +10,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
         elevation: 1,
         leading: IconButton(
-            icon: const Icon(Icons.short_text),
+            icon: const Icon(
+              vector_icons.Ionicons.log_out_outline
+            ),
             onPressed: () {
-              print('Hello');
+              dynamic result = _auth.logout();
             }),
         centerTitle: true,
         title: const Text(

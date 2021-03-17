@@ -1,9 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:track_finances/model/user.dart';
 import 'dart:ui';
 import 'package:track_finances/screens/loader.dart';
 import 'package:track_finances/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:track_finances/screens/wrapper.dart';
+import 'package:track_finances/services/auth.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,14 +57,17 @@ class MainPage extends StatelessWidget {
               );
             }
             if (snapshot.connectionState == ConnectionState.done) {
-              return MaterialApp(
-                title: 'Church Fund Tracker',
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                    primarySwatch: _1A8FFF,
-                    fontFamily: 'RocknRollOne',
-                    visualDensity: VisualDensity.adaptivePlatformDensity),
-                home: LoginPage(),
+              return StreamProvider<User>.value(
+                value: AuthService().userStatus,
+                child: MaterialApp(
+                  title: 'Church Fund Tracker',
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                      primarySwatch: _1A8FFF,
+                      fontFamily: 'RocknRollOne',
+                      visualDensity: VisualDensity.adaptivePlatformDensity),
+                  home: Wrapper(),
+                ),
               );
             }
             return Loading(
@@ -70,4 +77,6 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+
+
 

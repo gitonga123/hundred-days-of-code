@@ -1,13 +1,11 @@
 import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
 import 'package:flutter/material.dart';
 import 'package:track_finances/config/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:track_finances/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:track_finances/services/auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,16 +13,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email, password;
-
-  isUserLoggedIn() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    }
-  }
 
   @override
   void initState() {
@@ -33,24 +24,19 @@ class _LoginPageState extends State<LoginPage> {
       print("completed");
       setState(() {});
     });
-    this.isUserLoggedIn();
+    // this.isUserLoggedIn();
   }
 
   login() async {
-    ScaffoldMessenger
-        .of(context)
-        .showSnackBar(SnackBar(content: Text('Processing Data')));
     if (_formKey.currentState.validate()) {
-      try {
-        // UserCredential userCredential = await FirebaseAuth.instance
-            // .signInWithEmailAndPassword(email: email, password: password);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          showError('No user Found for that email.');
-        } else if (e.code == 'user-not-found') {
-          showError('No user Found for that email.');
-        }
+      dynamic result = await _auth.loginWithEmailAndPassword(email, password);
+      print(result);
+      if (result == null) {
+        print('Please enter a valid email and password');
+        showError('Please Enter a valid email and password');
       }
+
+
     }
   }
 
@@ -64,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                   fontFamily: 'Nunito',
                   fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.italic,
+                  fontStyle: FontStyle.normal,
                   fontSize: 30,
                   color: Colors.redAccent),
             ),
@@ -73,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                   fontFamily: 'Nunito',
                   fontStyle: FontStyle.normal,
-                  fontSize: 14,
+                  fontSize: 20,
                   fontWeight: FontWeight.w400),
             ),
             actions: [
