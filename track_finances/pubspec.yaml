@@ -32,7 +32,7 @@ dependencies:
   firebase_auth: ^1.0.1
   firebase_auth_web: ^1.0.2
   flutter_vector_icons: ^1.0.0
-  blurhash_flutter: ^0.1.0
+  flutter_blurhash: ^0.5.0
   email_validator: '^1.0.6'
 
 

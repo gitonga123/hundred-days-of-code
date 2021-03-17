@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
+// import 'package:flutter_vector_icons/flutter_vector_icons.dart' as vector_icons;
 import 'package:flutter/material.dart';
 import 'package:track_finances/config/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,15 +37,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   login() async {
-    print("Hello World");
-    print(email);
-    print(password);
+    ScaffoldMessenger
+        .of(context)
+        .showSnackBar(SnackBar(content: Text('Processing Data')));
     if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        print(UserCredential);
+        // UserCredential userCredential = await FirebaseAuth.instance
+            // .signInWithEmailAndPassword(email: email, password: password);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           showError('No user Found for that email.');
@@ -108,193 +106,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildEmailRow() {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (value.isEmpty) return 'Enter Email';
-          bool isValid = EmailValidator.validate(value);
-          if (!isValid) return 'Enter a valid email';
-          return '';
-        },
-        onSaved: (value) {
-          setState(() {
-            print(value);
-            email = value;
-          });
-        },
-        decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-              color: mainColor,
-            ),
-            labelText: 'E-mail'),
-      ),
-    );
-  }
-
-  Widget _buildPasswordRow() {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: TextFormField(
-        keyboardType: TextInputType.text,
-        obscureText: true,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Enter Password';
-          }
-          return '';
-        },
-        onSaved: (value) {
-          setState(() {
-            print(value);
-            password = value;
-          });
-        },
-        decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.lock,
-              color: mainColor,
-            ),
-            labelText: 'Password'),
-      ),
-    );
-  }
-
-  Widget _buildLoginButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: 1.4 * (MediaQuery.of(context).size.height / 20),
-          width: 5 * (MediaQuery.of(context).size.width / 10),
-          margin: EdgeInsets.only(bottom: 15),
-          child: ElevatedButton(
-            onPressed: () => login(),
-            style: ElevatedButton.styleFrom(
-                primary: mainColor,
-                shadowColor: mainColor,
-                elevation: 5.0,
-                shape: const BeveledRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5)))),
-            child: Text(
-              "Login",
-              style: TextStyle(
-                  color: Colors.white,
-                  letterSpacing: 1.5,
-                  fontSize: MediaQuery.of(context).size.height / 40),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildOrRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(bottom: 15),
-          child: Text(
-            '- OR -',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildForgetPasswordButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        TextButton(
-          onPressed: () {},
-          child: Text("Forgot Password?"),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: mainColor,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, 2),
-                    blurRadius: 6.0)
-              ],
-            ),
-            child: Icon(
-              vector_icons.FontAwesome.google,
-              color: Colors.white,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildContainer() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(15.0),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            width: MediaQuery.of(context).size.width * 0.8,
-            decoration: BoxDecoration(color: Colors.white),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Login",
-                      style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height / 30),
-                    )
-                  ],
-                ),
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        _buildEmailRow(),
-                        _buildPasswordRow(),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        _buildLoginButton()
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
   Widget _buildSignUpBtn() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -348,7 +159,145 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [_buildLogo(), _buildContainer(), _buildSignUpBtn()],
+                children: [
+                  _buildLogo(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30),
+                                  )
+                                ],
+                              ),
+                              Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: TextFormField(
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          validator: (value) {
+                                            if (value.isEmpty)
+                                              return 'Enter Email';
+                                            bool isValid =
+                                                EmailValidator.validate(value);
+                                            if (!isValid)
+                                              return 'Enter a valid email';
+                                            return null;
+                                          },
+                                          onChanged: (value) {
+                                            setState(() {
+                                              email = value;
+                                            });
+                                          },
+                                          decoration: InputDecoration(
+                                              prefixIcon: Icon(
+                                                Icons.email,
+                                                color: mainColor,
+                                              ),
+                                              labelText: 'E-mail'),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          obscureText: true,
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'Enter Password';
+                                            }
+                                            return null;
+                                          },
+                                          onChanged: (value) {
+                                            setState(() {
+                                              password = value;
+                                            });
+                                          },
+                                          decoration: InputDecoration(
+                                              prefixIcon: Icon(
+                                                Icons.lock,
+                                                color: mainColor,
+                                              ),
+                                              labelText: 'Password'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 1.4 *
+                                                (MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    20),
+                                            width: 5 *
+                                                (MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    10),
+                                            margin: EdgeInsets.only(bottom: 15),
+                                            child: ElevatedButton(
+                                              onPressed: login,
+                                              style: ElevatedButton.styleFrom(
+                                                  primary: mainColor,
+                                                  shadowColor: mainColor,
+                                                  elevation: 5.0,
+                                                  shape:
+                                                      const BeveledRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          5)))),
+                                              child: Text(
+                                                "Login",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    letterSpacing: 1.5,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            40),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ))
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  _buildSignUpBtn()
+                ],
               )
             ],
           )),

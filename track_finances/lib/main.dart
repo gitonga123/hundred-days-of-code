@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:track_finances/screens/loader.dart';
-import 'dart:ui';
 
+import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'package:track_finances/screens/loader.dart';
 import 'package:track_finances/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -28,40 +28,46 @@ class MainPage extends StatelessWidget {
   static const MaterialColor _1A8FFF = MaterialColor(0xFF1A8FFF, colorMap);
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _initialization,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Stack(
-              children: [
-                new Positioned.fill(
-                  child: Image.asset('assets/images/error_loading.jpg'),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Something Went Wrong",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'RocknRollOne',
-                        fontWeight: FontWeight.bold),
+    return MediaQuery(
+      data: new MediaQueryData(),
+      child: FutureBuilder(
+          future: _initialization,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Stack(
+                children: [
+                  new Positioned.fill(
+                    child: Image.asset('assets/images/error_loading.jpg'),
                   ),
-                ),
-              ],
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            return MaterialApp(
-              title: 'Church Fund Tracker',
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                  primarySwatch: _1A8FFF,
-                  fontFamily: 'RocknRollOne',
-                  visualDensity: VisualDensity.adaptivePlatformDensity),
-              home: LoginPage(),
-            );
-          }
-          return Loading();
-        });
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Something Went Wrong",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'RocknRollOne',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              return MaterialApp(
+                title: 'Church Fund Tracker',
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                    primarySwatch: _1A8FFF,
+                    fontFamily: 'RocknRollOne',
+                    visualDensity: VisualDensity.adaptivePlatformDensity),
+                home: LoginPage(),
+              );
+            }
+            return Loading(
+                height: MediaQuery.of(context).size.height.toInt(),
+                width: MediaQuery.of(context).size.height.toInt());
+          }),
+    );
   }
 }
+
