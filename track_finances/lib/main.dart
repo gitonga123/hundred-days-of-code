@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:track_finances/model/user.dart';
 import 'dart:ui';
 import 'package:track_finances/screens/loader.dart';
-import 'package:track_finances/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:track_finances/screens/wrapper.dart';
 import 'package:track_finances/services/auth.dart';
@@ -59,6 +58,7 @@ class MainPage extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               return StreamProvider<User>.value(
                 value: AuthService().userStatus,
+                initialData: User.initialData(),
                 child: MaterialApp(
                   title: 'Church Fund Tracker',
                   debugShowCheckedModeBanner: false,
