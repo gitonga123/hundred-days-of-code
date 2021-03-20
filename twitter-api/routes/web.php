@@ -32,3 +32,4 @@ Route::get(
 );
 
 Route::get('/score_home/date/{new_date?}', 'SofascoreController@index');
+Route::get('/update_midnight/scores', 'SofascoreController@indexProcessMidnight');

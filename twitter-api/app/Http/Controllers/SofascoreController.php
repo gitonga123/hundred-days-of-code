@@ -49,6 +49,43 @@ class SofascoreController extends Controller
 
     }
 
+    public function indexProcessMidnight()
+    {
+        try {
+            $sf_dates = SfDates::where('processed', 1)->orderBy('id', 'desc')->first();
+            $date = $sf_dates->event_date;
+            $datetime = new \DateTime($date);
+            $datetime->modify('+1 day');
+            $new_date = $datetime->format('Y-m-d');
+            
+            $base_file = $date . '_base.json';
+            $predict_file = $date . '_predict.json';
+            $predicted_file = $this->checkIfFileExists($predict_file);
+            $match_file = $this->checkIfFileExists($base_file);
+            $number_of_records = $this->processMatchResultsForPastMidnight(
+                $match_file, $new_date, $predicted_file
+            );
+            $number_of_records = $number_of_records + $sf_dates->number_of_records;
+            SfDates::where('id', $sf_dates->id)
+                ->update(
+                    [
+                        'processed' => 2,
+                        'number_of_records' => $number_of_records
+                    ]
+                );
+            return response()->json(
+                [
+                    'success' => true,
+                    'no_of_records' => $number_of_records
+                ]
+            );
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['success' => false]);
+        }
+    }
+
     /**
      * Update Records for correct score if it exists
      * Given the sets for both players, determine who wins the match
@@ -142,9 +179,50 @@ class SofascoreController extends Controller
                         $full_match_details['away_score'] = json_encode($value['awayScore']);
                         $full_match_details['match_id'] = $value['id'];
                         $full_match_details['event_date'] = $event_date_time;
-
-                        $this->createProcessMatchResults($full_match_details);
                         Log::info('Processing id --> ' . $value['id']);
+                        $this->createProcessMatchResults(
+                            $full_match_details, $index
+                        );
+                        Log::info('Processed id --> ' . $value['id']);
+                        $index++;
+                    }
+                }
+            }
+        }
+        return $index;
+    }
+
+    public function processMatchResultsForPastMidnight($match_file, $date, $predicted_file) {
+        $full_match_details = [];
+        $match_details = JsonMachine::fromFile($match_file, '/events');
+        $index = 0;
+        foreach ($match_details as $key => $value) {
+            if (array_key_exists('winnerCode', $value) && $value['tournament']['slug'] != 'ukraine-win-cup' && $value['winnerCode'] != 0) {
+                $event_date_time = $this->convertTimestampToDateTimeWithTimeZone(
+                    $value['startTimestamp'], $date
+                );
+                if ($event_date_time) {
+                    $full_match_details = $this->processPredictedMatchDetails(
+                        $predicted_file, $value['id']
+                    );
+                    if ($full_match_details) {
+                        $full_match_details['competition'] = $value['tournament']['category']['flag'] . ' ' . $value['tournament']['name'];
+                        $full_match_details['player_1'] = $value['homeTeam']['name'];
+                        $full_match_details['player_2'] = $value['awayTeam']['name'];
+                        $full_match_details['result'] = $value['winnerCode'];
+                        $full_match_details['home_score'] = json_encode(
+                            $value['homeScore']
+                        );
+                        $full_match_details['away_score'] = json_encode(
+                            $value['awayScore']
+                        );
+                        $full_match_details['match_id'] = $value['id'];
+                        $full_match_details['event_date'] = $event_date_time;
+                        Log::info('Processing id --> ' . $value['id']);
+                        $this->createProcessMatchResults(
+                            $full_match_details, $index
+                        );
+                        Log::info('Processed  id --> ' . $value['id']);
                         $index++;
                     }
                 }
@@ -157,13 +235,20 @@ class SofascoreController extends Controller
      * Create the processed match details in the \App\Models\Sofascore
      *
      * @param array $full_match_details // array of match details to create
+     * @param int $index // return increment of index after update
      *
-     * @return void
+     * @return mixed
      */
-    public function createProcessMatchResults($full_match_details)
+    public function createProcessMatchResults($full_match_details, $index)
     {
         try {
-            Sofascore::create($full_match_details);
+            $result = Sofascore::where('match_id', $full_match_details['match_id']);
+            if ($result->count('match_id') < 1) {
+                Log::info("Storing...");
+                Sofascore::create($full_match_details);
+                $index;
+            }
+            return $index;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -254,12 +339,16 @@ class SofascoreController extends Controller
      *
      * @return mixed
      */
-    public function convertTimestampToDateTimeWithTimeZone($timestamp, $input_date)
-    {
+    public function convertTimestampToDateTimeWithTimeZone(
+        $timestamp, $input_date, $past_midnight = false
+    ) {
         $date = new \DateTime("@" . $timestamp);
         $date->setTimezone(new \DateTimeZone('Africa/Nairobi'));
         $format_1 = $date->format('Y-m-d');
         if ($format_1 == $input_date) {
+            return $date->format('Y-m-d H:i:s');
+        }
+        if ($past_midnight && $format_1 == $input_date) {
             return $date->format('Y-m-d H:i:s');
         }
         return false;
@@ -641,29 +730,44 @@ class SofascoreController extends Controller
         $predicted_array = $this->getMatchDetail($id);
         $calc_odds = false;
         $result = [];
+        
         if ($predicted_array['home_odd'] && $predicted_array['away_odd']) {
             $calc_odds = $this->convertFractionToDecimal(
                 $predicted_array['home_odd'], $predicted_array['away_odd']
             );
 
-            $result = $this->searchForMatchWithThisDetails($predicted_array, $calc_odds, $competition);
+            $result = $this->searchForMatchWithThisDetails(
+                $predicted_array,
+                $calc_odds,
+                $competition
+            );
+            if (count($result) < 1) {
+                $result = $this->searchForMatchWithThisDetails(
+                    $predicted_array,
+                    $calc_odds,
+                    $competition,
+                    true
+                );
+            }
         }
         return json_encode($result);
     }
 
-    public function searchForMatchWithThisDetails($predicted_array, $calc_odds, $competition)
+    public function searchForMatchWithThisDetails($predicted_array, $calc_odds, $competition, $force = false)
     {
+        $competition = $force ? $this->getCompetitionToSearch() : [$competition];
         $search = [
             'home_odd' => rtrim($calc_odds[0]),
             'away_odd' => rtrim($calc_odds[1]),
-            'competition' => $competition,
             'actual_value_home' => $predicted_array['home']['actual'],
             'expected_value_home' => $predicted_array['home']['expected'],
             'expected_value_away' => $predicted_array['away']['expected'],
             'actual_value_away' => $predicted_array['away']['actual'],
         ];
         $new_search = array_filter($search);
-        $results = Sofascore::where($new_search)->get();
+        $results = Sofascore::where($new_search)->whereIn(
+            'competition', $competition
+        )->take(8)->get();
 
         return $results;
     }
@@ -673,6 +777,8 @@ class SofascoreController extends Controller
         $predicted_array = [];
         $predicted_array['home_odd'] = false;
         $predicted_array['away_odd'] = false;
+        $details['home'] = [];
+        $details['away'] = [];
         try {
             $response = Http::get(
                 "https://api.sofascore.com/api/v1/event/{$match_id}/provider/1/winning-odds"
@@ -681,6 +787,7 @@ class SofascoreController extends Controller
                 return $predicted_array;
             }
             $details = json_decode($response->body(), true);
+            
             if ($details['home']) {
                 $predicted_array['home'] = [
                     'expected' => $details['home']['expected'],
@@ -691,6 +798,7 @@ class SofascoreController extends Controller
                     'expected' => null,
                     'actual' => null,
                 ];
+                $details['home'] = [];
             }
             if ($details['away']) {
                 $predicted_array['away'] = [
@@ -702,6 +810,7 @@ class SofascoreController extends Controller
                     'expected' => null,
                     'actual' => null,
                 ];
+                $details['away'] = [];
             }
             if (array_key_exists('fractionalValue', $details['home'])) {
                 $predicted_array['home_odd'] = $details['home']['fractionalValue'];
