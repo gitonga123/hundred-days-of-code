@@ -2,12 +2,22 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:track_finances/widget/add_transaction.dart';
 
 class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
     final mediaQuery = MediaQuery.of(context);
+
+    void _showAddTransactionPanel() {
+      showModalBottomSheet(context: context, builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          child: AddTransactionForm(),
+        );
+      });
+    }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50),
       width: mediaQuery.size.width,
@@ -42,9 +52,7 @@ class Header extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {
-                    print("Add new transaction");
-                  },
+                  onPressed: () => _showAddTransactionPanel(),
                   style: OutlinedButton.styleFrom(
                       primary: Colors.black,
                       backgroundColor: Colors.white,

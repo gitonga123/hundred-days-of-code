@@ -1,71 +1,20 @@
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:track_finances/model/user.dart';
 import 'dart:ui';
+import 'package:track_finances/screens/loader.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:track_finances/screens/wrapper.dart';
+import 'package:track_finances/services/auth.dart';
 
-import 'package:track_finances/screens/home_page.dart';
-import 'package:track_finances/widget/button_widget.dart';
-
-<<<<<<< HEAD
 void main() {
-  runApp(MianPage());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MainPage());
 }
-
-class MianPage extends StatefulWidget {
-  @override
-  _MianPageState createState() => _MianPageState();
-}
-
-class _MianPageState extends State<MianPage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PDF Viewer',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.all(32),
-            child: Column(
-              children: [
-                ButtonWidget(
-                  "Asset PDF", () => {
-
-                  }
-                ),
-                SizedBox(height: 16,),
-                ButtonWidget(
-                  "File PDF", () => {
-
-                  }
-                ),
-                SizedBox(height: 16,),
-                ButtonWidget(
-                  "Network PDF", () => {
-
-                  }
-                ),
-                SizedBox(height: 16,),
-                ButtonWidget(
-                  "Firebase PDF", () => {
-
-                  }
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget ButtonWidget(String text, () {}) {
-
-  }
-}
-=======
-void main() => runApp(MainPage());
->>>>>>> 926b047268e87732da3d4d231866e9af08ef2458
 
 class MainPage extends StatelessWidget {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   static const Map<int, Color> colorMap = {
     50: Color.fromRGBO(26, 143, 255, 0.1),
     100: Color.fromRGBO(26, 143, 255, 0.2),
@@ -82,15 +31,52 @@ class MainPage extends StatelessWidget {
   static const MaterialColor _1A8FFF = MaterialColor(0xFF1A8FFF, colorMap);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Church Fund Tracker',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: _1A8FFF,
-        fontFamily: 'RocknRollOne',
-        visualDensity: VisualDensity.adaptivePlatformDensity
-      ),
-      home: HomePage(),
+    return MediaQuery(
+      data: new MediaQueryData(),
+      child: FutureBuilder(
+          future: _initialization,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Stack(
+                children: [
+                  new Positioned.fill(
+                    child: Image.asset('assets/images/error_loading.jpg'),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Something Went Wrong",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'RocknRollOne',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              return StreamProvider<User>.value(
+                value: AuthService().userStatus,
+                initialData: User.initialData(),
+                child: MaterialApp(
+                  title: 'Church Fund Tracker',
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                      primarySwatch: _1A8FFF,
+                      fontFamily: 'RocknRollOne',
+                      visualDensity: VisualDensity.adaptivePlatformDensity),
+                  home: Wrapper(),
+                ),
+              );
+            }
+            return Loading(
+                height: MediaQuery.of(context).size.height.toInt(),
+                width: MediaQuery.of(context).size.height.toInt());
+          }),
     );
   }
 }
+
+
+

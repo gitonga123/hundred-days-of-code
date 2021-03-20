@@ -1,18 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="0991fc53-e9f7-44b0-a501-359af351b3f8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/screens/button_between.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/model/finance.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/services/database.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/services/finance_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widget/add_transaction.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widget/finance_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widget/finance_tile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/user.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/user.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/header.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/auth.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/auth.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_XL_API_23" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[Pixel_3a_XL_API_23]" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -27,24 +47,24 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/lib/generated_plugin_registrant.dart" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mutwi\Documents\GitHub\hundred-days-of-code\track_finances\lib\widget" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -69,8 +89,47 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="392" y="91" key="#Plugins" timestamp="1615879037690">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="392" y="91" key="#Plugins/0.0.1600.900@0.0.1600.900" timestamp="1615879037690" />
+    <state x="100" y="100" width="1400" height="700" key="AVDManager" timestamp="1616150389889">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="100" y="100" width="1400" height="700" key="AVDManager/0.0.1600.900@0.0.1600.900" timestamp="1616150389889" />
+    <state x="580" y="205" key="FileChooserDialogImpl" timestamp="1615875600709">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="580" y="205" key="FileChooserDialogImpl/0.0.1600.900@0.0.1600.900" timestamp="1615875600709" />
+    <state width="754" height="212" key="GridCell.Tab.0.bottom" timestamp="1616170636369">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="754" height="212" key="GridCell.Tab.0.bottom/0.0.1600.900@0.0.1600.900" timestamp="1616170636369" />
+    <state width="754" height="212" key="GridCell.Tab.0.center" timestamp="1616170636369">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="754" height="212" key="GridCell.Tab.0.center/0.0.1600.900@0.0.1600.900" timestamp="1616170636369" />
+    <state width="754" height="212" key="GridCell.Tab.0.left" timestamp="1616170636369">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="754" height="212" key="GridCell.Tab.0.left/0.0.1600.900@0.0.1600.900" timestamp="1616170636369" />
+    <state width="754" height="212" key="GridCell.Tab.0.right" timestamp="1616170636369">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state width="754" height="212" key="GridCell.Tab.0.right/0.0.1600.900@0.0.1600.900" timestamp="1616170636369" />
+    <state x="301" y="95" key="SettingsEditor" timestamp="1615878255038">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="301" y="95" key="SettingsEditor/0.0.1600.900@0.0.1600.900" timestamp="1615878255038" />
+    <state x="463" y="190" width="672" height="678" key="search.everywhere.popup" timestamp="1616159606032">
+      <screen x="0" y="0" width="1600" height="900" />
+    </state>
+    <state x="463" y="190" width="672" height="678" key="search.everywhere.popup/0.0.1600.900@0.0.1600.900" timestamp="1616159606032" />
   </component>
 </project>
