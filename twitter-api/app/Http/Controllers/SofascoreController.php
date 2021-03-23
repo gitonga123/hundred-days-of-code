@@ -666,6 +666,7 @@ class SofascoreController extends Controller
             'competition',
             $this->getCompetitionToSearch()
         )->get();
+
         $competition = Sofascore::all('competition')->unique('competition');
         $total_records = Sofascore::count();
         return view(
