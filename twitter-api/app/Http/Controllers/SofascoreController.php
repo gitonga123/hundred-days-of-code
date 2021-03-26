@@ -38,9 +38,20 @@ class SofascoreController extends Controller
             $predicted_file = empty($this->checkIfFileExists($predict_file, false)) ? $this->writePredictedToFIle($predict_file, $date) : $this->checkIfFileExists($predict_file, false);
 
             $match_file = empty($this->checkIfFileExists($base_file)) ? $this->writeBaseToFile($base_file, $date) : $this->checkIfFileExists($base_file);
-            $number_of_records = $this->processMatchResults($match_file, $date, $predicted_file);
+            $number_of_records = $this->processMatchResults(
+                $match_file, $date, $predicted_file
+            );
             SfDates::where('id', $sf_dates->id)
-                ->update(['processed' => 1, 'number_of_records' => $number_of_records]);
+                ->update(
+                    [
+                        'processed' => 1,
+                        'number_of_records' => (
+                            $number_of_records + intval(
+                                $sf_dates->number_of_records
+                            )
+                        )
+                    ]
+                );
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
