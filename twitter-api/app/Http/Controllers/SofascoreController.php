@@ -414,6 +414,8 @@ class SofascoreController extends Controller
                         'actual_value_home' => $predictor['home']['actual'],
                         'expected_value_away' => $predictor['away']['expected'],
                         'actual_value_away' => $predictor['away']['actual'],
+                        'winner_home' => $value['choices'][0]['winning'],
+                        'winner_away' => $value['choices'][1]['winning'],
                     ];
                 }
             }

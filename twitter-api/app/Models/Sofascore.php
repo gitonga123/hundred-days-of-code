@@ -26,6 +26,8 @@ class Sofascore extends Model
         'match_id',
         'event_date',
         'correct_score',
+        'winner_home',
+        'winner_away'
     ];
 
     public function scopeUpdatedScore($query, $value)
