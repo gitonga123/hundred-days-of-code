@@ -49,7 +49,7 @@ class SofascoreController extends Controller
                             $number_of_records + intval(
                                 $sf_dates->number_of_records
                             )
-                        )
+                        ),
                     ]
                 );
             return response()->json(['success' => true]);
@@ -68,7 +68,7 @@ class SofascoreController extends Controller
             $datetime = new \DateTime($date);
             $datetime->modify('+1 day');
             $new_date = $datetime->format('Y-m-d');
-            
+
             $base_file = $date . '_base.json';
             $predict_file = $date . '_predict.json';
             $predicted_file = $this->checkIfFileExists($predict_file);
@@ -81,13 +81,13 @@ class SofascoreController extends Controller
                 ->update(
                     [
                         'processed' => 2,
-                        'number_of_records' => $number_of_records
+                        'number_of_records' => $number_of_records,
                     ]
                 );
             return response()->json(
                 [
                     'success' => true,
-                    'no_of_records' => $number_of_records
+                    'no_of_records' => $number_of_records,
                 ]
             );
 
@@ -203,7 +203,8 @@ class SofascoreController extends Controller
         return $index;
     }
 
-    public function processMatchResultsForPastMidnight($match_file, $date, $predicted_file) {
+    public function processMatchResultsForPastMidnight($match_file, $date, $predicted_file)
+    {
         $full_match_details = [];
         $match_details = JsonMachine::fromFile($match_file, '/events');
         $index = 0;
@@ -413,9 +414,7 @@ class SofascoreController extends Controller
                         'expected_value_home' => $predictor['home']['expected'],
                         'actual_value_home' => $predictor['home']['actual'],
                         'expected_value_away' => $predictor['away']['expected'],
-                        'actual_value_away' => $predictor['away']['actual'],
-                        'winner_home' => $value['choices'][0]['winning'],
-                        'winner_away' => $value['choices'][1]['winning'],
+                        'actual_value_away' => $predictor['away']['actual']
                     ];
                 }
             }
@@ -510,6 +509,24 @@ class SofascoreController extends Controller
      * @return mixed
      */
     public function checkIfFileExists($file_name, $full_path = true)
+    {
+        try {
+            $match_info = Storage::disk('local')->exists($file_name) ? Storage::disk('local')->path($file_name) : [];
+            return $match_info;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Check if file exists in local storage
+     *
+     * @param string $file_name // the name of file to check if it exists
+     *
+     * @return mixed
+     */
+    public function checkIfFileExistsUpdated($file_name, $full_path = true)
     {
         try {
             $match_info = Storage::disk('local')->exists($file_name) ? Storage::disk('local')->path($file_name) : [];
@@ -744,7 +761,7 @@ class SofascoreController extends Controller
         $predicted_array = $this->getMatchDetail($id);
         $calc_odds = false;
         $result = [];
-        
+
         if ($predicted_array['home_odd'] && $predicted_array['away_odd']) {
             $calc_odds = $this->convertFractionToDecimal(
                 $predicted_array['home_odd'], $predicted_array['away_odd']
@@ -801,7 +818,7 @@ class SofascoreController extends Controller
                 return $predicted_array;
             }
             $details = json_decode($response->body(), true);
-            
+
             if ($details['home']) {
                 $predicted_array['home'] = [
                     'expected' => $details['home']['expected'],
@@ -894,5 +911,66 @@ class SofascoreController extends Controller
             ],
             200
         );
+    }
+
+    /**
+     * Update for previous matches
+     *
+     * @return mixed
+     */
+    public function getWinnerFromProvider($predicted_file, $match_id)
+    {
+        $updated_details = [];
+        $predicted_details = JsonMachine::fromFile($predicted_file, '/odds');
+        foreach ($predicted_details as $key => $value) {
+            if (intval($key) == intval($match_id)) {
+                if (array_key_exists("winning", $value['choices'][0]) && array_key_exists("winning", $value['choices'][1])) {
+                    $updated_details = [
+                        'winner_home' => $value['choices'][0]['winning'],
+                        'winner_away' => $value['choices'][1]['winning'],
+                    ];
+                }
+            }
+        }
+
+        return $updated_details;
+    }
+
+    public function getMatchWinnerBool()
+    {
+        $sf_dates = SfDates::where('processed', 1)->orderBy('id', 'desc')->first();
+        $date = $sf_dates->event_date;
+        if (!$sf_dates) {
+            return false;
+        }
+        $predict_file = "/var/www/html/hundred-days-of-code/twitter-api/storage/app/backup/" . $date . '_predict.json';
+        
+        $sofascore = Sofascore::select(
+            'id', 'match_id', 'expected_value_home', 'expected_value_away'
+        )->where(
+            'event_date', "LIKE", "%" . $date . "%"
+        )->whereNotNull(
+            'expected_value_home'
+        )->whereNotNull(
+            'expected_value_away'
+        )->get();
+        foreach ($sofascore as $detail) {
+            $result = $this->getWinnerFromProvider(
+                $predict_file, $detail->match_id
+            );
+
+            if (!empty($result)) {
+                $this->updateMatchWinnerBool($detail, $result);
+            }
+        }
+        Log::info("End of Processing {$date} file");
+        SfDates::where('id', $sf_dates->id)->update(['processed' => 3]);
+    }
+
+    public function updateMatchWinnerBool($detail, $update)
+    {
+        $detail::where('id', $detail->id)->update($update);
+        Log::info("Match {$detail->id} updated with value");
+        return true;
     }
 }
