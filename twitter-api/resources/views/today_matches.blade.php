@@ -14,7 +14,7 @@
 
   <!-- Bootstrap core CSS -->
   {{-- <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> --}}
-
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
   <script src="{{ asset('js/d285027a3d.js') }}"></script>
@@ -179,12 +179,14 @@
             type: 'get'
         });
         newServerRqst.done(function (response) {
+          let home_string = '';
+          let away_string = '';
           var home_score = JSON.parse(response.data.home);
           var away_score = JSON.parse(response.data.away);
           var home_keys = Object.keys(home_score);
           var away_keys = Object.keys(away_score);
-          let home_string = '<tr>';
-          let away_string = '<tr>';
+          home_string = '<tr>';
+          away_string = '<tr>';
           home_keys.forEach(key => {
             if (key.includes('period')) {
               home_string+=`<td>${home_score[key]}</td>`;
@@ -241,11 +243,20 @@
               } else if (match.away_change === "1") {
                   icon_2 = `<i class="fa fa-sort-up text-success"></i>`;
               }
+              let class_home_name = "";
+              let class_away_name = ""; 
+              if (match.winner_home == 1) {
+                class_home_name = "gOTTkb";
+              }
+
+              if (match.winner_away == 1) {
+                class_away_name="gOTTkb"
+              }
 
               tr += `<tr><td  onclick="getScoreDetails(${match.match_id})"><i class="fa fa-plus-circle"></i> ${match.match_id}</td><td>${match.player_1}<span id="span_id_${match.match_id}" class="d-none"><br/><span id="match_${match.match_id}"></span></span></td>
                       <td>${match.player_2}</td>
-                      <td>${match.home_odd}</td>
-                      <td>${match.away_odd}</td>
+                      <td><span class="${class_home_name}">${match.home_odd}</span></td>
+                      <td><span class="${class_away_name}">${match.away_odd}</span></td>
                       <td>${match.result}</td>
                       <td>${match.correct_score}</td>
                       <td>${match.home_total}</td>

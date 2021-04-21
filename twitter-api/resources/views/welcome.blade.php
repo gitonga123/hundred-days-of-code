@@ -16,6 +16,7 @@
   {{-- <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> --}}
 
   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
   <script src="{{ asset('js/d285027a3d.js') }}"></script>
 
@@ -196,8 +197,8 @@
                         @if ($match->away_change == "0")
                         @endif
                       </td>
-                      <td>{{$match->expected_value_home}} - {{$match->actual_value_home}}</td>
-                      <td>{{$match->expected_value_away}} - {{$match->actual_value_away}}</td>
+                      <td>{{$match->expected_value_home}} - <span @if ($match->winner_home) class="gOTTkb" @endif>{{$match->actual_value_home}}</span></td>
+                      <td>{{$match->expected_value_away}} - <span @if ($match->winner_away) class="gOTTkb" @endif>{{$match->actual_value_away}}</span></td>
                       <td>{{$match->result}}</td>
                       <td>{{$match->correct_score}}</td>
                       <td>{{$match->event_date}}</td>

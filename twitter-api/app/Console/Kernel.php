@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         Commands\UpdateScores::class,
         Commands\ProcessMatch::class,
         Commands\UpdateTotalScores::class,
-        Commands\UpdateSfDates::class
+        Commands\UpdateSfDates::class,
+        Commands\updateWinner::class
     ];
 
     /**
